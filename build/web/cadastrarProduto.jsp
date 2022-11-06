@@ -64,16 +64,16 @@
                         <label for="idendereco" 
                             class="col-md-1 form-label btn btn-primary btn-md">Estoque</label>
                         <div class="col-md-6">
-                            <input type="number" name="estoque" id="idestoque" 
-                                   class="form-control" value="${produto.estoque}">
+                            <input type="number" name="estoque" id="idestoque" min="0" 
+                                   class="form-control" value="${produto.endereco}">
                             
                         </div>
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idemail" 
-                            class="col-md-1 form-label btn btn-primary btn-md">Preco</label>
+                            class="col-md-1 form-label btn btn-primary btn-md">Preço</label>
                         <div class="col-md-6">
-                            <input type="number" name="preco" id="idpreco" min="0" step="any"
+                            <input type="number" name="preco" id="idpreco" step="any" 
                                    class="form-control" value="${produto.preco}">
                             
                         </div>

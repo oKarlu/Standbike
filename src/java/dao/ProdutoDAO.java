@@ -28,6 +28,7 @@ public class ProdutoDAO {
             ps.setDouble(4, prod.getPreco());
             ps.setInt(5, prod.getStatus());
             
+            
                     
         } else {
             sql  = "UPDATE produto "

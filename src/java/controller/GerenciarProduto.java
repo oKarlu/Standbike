@@ -111,7 +111,6 @@ public class GerenciarProduto extends HttpServlet {
         Produto p = new Produto();
         ProdutoDAO pdao = new ProdutoDAO();
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             
             if(!idProduto.isEmpty()){
                 p.setIdProduto(Integer.parseInt(idProduto));
