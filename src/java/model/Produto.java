@@ -15,7 +15,5 @@ public class Produto {
     private String descricao;
     private int estoque;
     private double preco;
-    private String nomeArquivo;
-    private String caminho;
     private int status;
 }
