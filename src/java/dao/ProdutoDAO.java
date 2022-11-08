@@ -2,14 +2,15 @@ package dao;
 
 import factory.ConexaoFactory;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Produto;
+import java.sql.SQLException;
 
 public class ProdutoDAO {
-    
+
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
@@ -20,7 +21,7 @@ public class ProdutoDAO {
         
         if(prod.getIdProduto() == 0){
             sql = "INSERT INTO produto(nome, descricao, estoque, preco, status)"
-                + "VALUES (?, ?, ?, ?, ?)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, prod.getNome());
             ps.setString(2, prod.getDescricao());
@@ -28,13 +29,12 @@ public class ProdutoDAO {
             ps.setDouble(4, prod.getPreco());
             ps.setInt(5, prod.getStatus());
             
-            
                     
         } else {
             sql  = "UPDATE produto "
                     + "SET nome = ?, descricao = ?, estoque = ?, "
                     + "preco = ?, status = ?"
-                    + "WHERE idProduto = ?";
+                    + "WHERE idProduto = ?;";
             ps = con.prepareStatement(sql);
             ps.setString(1, prod.getNome());
             ps.setString(2, prod.getDescricao());
@@ -58,15 +58,15 @@ public class ProdutoDAO {
         rs = ps.executeQuery();
 
         while (rs.next()) {
-            Produto prod = new Produto();
-            prod.setIdProduto(rs.getInt("idProduto"));
-            prod.setNome(rs.getString("nome"));
-            prod.setDescricao(rs.getString("descricao"));
-            prod.setEstoque(rs.getInt("estoque"));
-            prod.setPreco(rs.getDouble("preco"));
-            prod.setStatus(rs.getInt("status"));
+            Produto cli = new Produto();
+            cli.setIdProduto(rs.getInt("idProduto"));
+            cli.setNome(rs.getString("nome"));
+            cli.setDescricao(rs.getString("descricao"));
+            cli.setEstoque(rs.getInt("estoque"));
+            cli.setPreco(rs.getDouble("preco"));
+            cli.setStatus(rs.getInt("status"));
 
-            produtos.add(prod);
+            produtos.add(cli);
         }
         ConexaoFactory.close(con);
         return produtos;
@@ -123,5 +123,4 @@ public class ProdutoDAO {
         ConexaoFactory.close(con);
         return true;
     }
-    
 }

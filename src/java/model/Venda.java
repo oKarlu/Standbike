@@ -2,6 +2,8 @@
 package model;
 
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +16,10 @@ import lombok.ToString;
 @ToString
 public class Venda {
     private int idVenda;
+    private Date dataVenda;
+    private Usuario vendedor;
     private Cliente cliente;
-    private Produto produto;
+    private ArrayList<VendaProduto> carrinho;
     private double valorTotal;
     private int status;
 }

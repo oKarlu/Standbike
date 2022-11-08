@@ -116,6 +116,9 @@
                                                     
                                                 </c:otherwise>
                                             </c:choose>
+                                            <a href="formVenda.jsp?acao=novo&idCliente=${c.idCliente}" class="btn btn-primary btn-sm" role="button">
+                                                <i class="glyphicon glyphicon">Realizar Venda</i>
+                                            </a>    
                                         </td>
                                     </tr>
                                 </c:forEach>    

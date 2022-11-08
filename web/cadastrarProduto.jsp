@@ -65,7 +65,7 @@
                             class="col-md-1 form-label btn btn-primary btn-md">Estoque</label>
                         <div class="col-md-6">
                             <input type="number" name="estoque" id="idestoque" min="0" 
-                                   class="form-control" value="${produto.endereco}">
+                                   class="form-control" value="${produto.estoque}">
                             
                         </div>
                     </div>
