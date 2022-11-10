@@ -144,6 +144,37 @@ public class UsuarioDAO {
         return true;
         
     }
+    
+    public Usuario getRecuperarUsuario(String login){
+        Usuario u = new Usuario();
+        sql = "SELECT u.* FROM usuario u "
+                + "WHERE u.login = ?";
+        
+        try{
+            con = ConexaoFactory.conectar();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, login);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                u.setIdUsuario(rs.getInt("u.idUsuario"));
+                u.setNome(rs.getString("u.nome"));
+                u.setLogin(rs.getString("u.login"));
+                u.setSenha(rs.getString("u.senha"));
+                u.setStatus(rs.getInt("u.status"));
+                
+                PerfilDAO pDao = new PerfilDAO();
+                u.setPerfil(pDao.getCarregarPorId(rs.getInt("u.idPerfil")));
+            }
+            ConexaoFactory.close(con);
+            return u;
+            
+            
+        }catch(Exception e){
+            System.out.println(e);
+            return null;
+        }
+    }
        
     
 }

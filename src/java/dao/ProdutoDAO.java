@@ -31,10 +31,7 @@ public class ProdutoDAO {
             
                     
         } else {
-            sql  = "UPDATE produto "
-                    + "SET nome = ?, descricao = ?, estoque = ?, "
-                    + "preco = ?, status = ?"
-                    + "WHERE idProduto = ?;";
+            sql  = "UPDATE produto SET nome = ?, descricao = ?, estoque = ?, preco = ?, status = ? WHERE idProduto = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, prod.getNome());
             ps.setString(2, prod.getDescricao());
