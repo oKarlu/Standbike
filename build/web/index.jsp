@@ -1,15 +1,19 @@
 
+<%@page import="controller.GerenciarLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
-<!DOCTYPE html>
+
+<%
+    GerenciarLogin.verificarAcesso(request, response);
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0,
-              shrink-to-fit=no">
+              maximum-scale=1, user-scalable=no shrink-to-fit=no">
         <link rel="stylesheet" href="bootstrap/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="fonts/css/all.css" type="text/css">
         <link rel="stylesheet" href="css/menu.css" type="text/css">
@@ -18,12 +22,11 @@
     </head>
     <body>
         <div id="container-fluid">
-            
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 

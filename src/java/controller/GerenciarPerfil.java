@@ -3,8 +3,6 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,47 +34,49 @@ public class GerenciarPerfil extends HttpServlet {
         
         try {
             if(acao.equals("listar")){
-                ArrayList<Perfil> perfis = new ArrayList<>();
-                perfis = pdao.getLista();
-                for(Perfil perfil: perfis){
-                    System.out.println(perfil);
-                }
-                RequestDispatcher dispatcher =
-                        getServletContext().
-                                getRequestDispatcher("/listarPerfis.jsp");
-                request.setAttribute("perfis", perfis);
-                dispatcher.forward(request, response);
-            }else if(acao.equals("alterar")){
-                p = pdao.getCarregarPorId(Integer.parseInt(idPerfil));
-                if(p.getIdPerfil() > 0 ){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    ArrayList<Perfil> perfis = new ArrayList<>();
+                    perfis = pdao.getLista();
+                    for(Perfil perfil: perfis){
+                        System.out.println(perfil);
+                    }
                     RequestDispatcher dispatcher =
-                        getServletContext().
-                            getRequestDispatcher("/cadastrarPerfil.jsp");
-                    request.setAttribute("perfil", p);
+                            getServletContext().
+                                    getRequestDispatcher("/listarPerfis.jsp");
+                    request.setAttribute("perfis", perfis);
                     dispatcher.forward(request, response);
-                    
                 }else{
-                    mensagem = "Perfil não encontrado na base dados!";
+                    mensagem = "Acesso Negado!";
+                }
+            }else if(acao.equals("alterar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    p = pdao.getCarregarPorId(Integer.parseInt(idPerfil));
+                    if(p.getIdPerfil() > 0 ){
+                        RequestDispatcher dispatcher =
+                            getServletContext().
+                                getRequestDispatcher("/cadastrarPerfil.jsp");
+                        request.setAttribute("perfil", p);
+                        dispatcher.forward(request, response);
+
+                    }else{
+                        mensagem = "Perfil não encontrado na base dados!";
+                    }
+                }else{
+                    mensagem = "Acesso Negado!";
                 }
                 
-            }else if(acao.equals("desativar")){
-                p.setIdPerfil(Integer.parseInt(idPerfil));
-                if(pdao.desativar(p)){
-                    mensagem = "Perfil desativado com sucesso!";
-                    
+            }else if(acao.equals("deletar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    p.setIdPerfil(Integer.parseInt(idPerfil));
+                    if(pdao.deletar(p)){
+                        mensagem = "Perfil deletado com sucesso!";
+
+                    }else{
+                        mensagem = "Falha ao deletar o perfil!";
+                    }
                 }else{
-                    mensagem = "Falha ao desativar o perfil!";
-                }
-          
-               
-            }else if(acao.equals("ativar")){
-                p.setIdPerfil(Integer.parseInt(idPerfil));
-                if(pdao.ativar(p)){
-                     mensagem = "Perfil ativado com sucesso!";
-                }else{
-                    mensagem = "Falha ao ativar o perfil!";
-                }
-            
+                    mensagem = "Acesso Negado!";
+                }     
             
             }else{
                 response.sendRedirect("/index.jsp");
@@ -105,14 +105,11 @@ public class GerenciarPerfil extends HttpServlet {
         PrintWriter out = response.getWriter();
         String idPerfil = request.getParameter("idPerfil");
         String nome = request.getParameter("nome");
-        String dataCadastro = request.getParameter("dataCadastro");
-        String status = request.getParameter("status");
         String mensagem = "";
         
         Perfil p = new Perfil();
         PerfilDAO pdao = new PerfilDAO();
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             
             if(!idPerfil.isEmpty()){
                 p.setIdPerfil(Integer.parseInt(idPerfil));
@@ -126,25 +123,9 @@ public class GerenciarPerfil extends HttpServlet {
                 p.setNome(nome);
             }
             
-            if(dataCadastro.isEmpty() || dataCadastro.equals("")){
-                request.setAttribute("msg", "Informe a data do cadastro!");
-                despacharRequisicao(request, response);
-            }else{
-                p.setDataCadastro(df.parse(dataCadastro));
-            }
-            
-            if(status.isEmpty() || status.equals("")){
-                request.setAttribute("msg", "Informe o status do Perfil!");
-                despacharRequisicao(request, response);
-            }else{
-                p.setStatus(Integer.parseInt(status));
-            }
-            
             if(pdao.gravar(p)){
                 mensagem = "Perfil salvo na base de dados";
             }
-        } catch (ParseException pe) {
-            mensagem = "Erro: " + pe.getMessage();
         } catch (SQLException e){
             mensagem = "Erro: " + e.getMessage();
         }

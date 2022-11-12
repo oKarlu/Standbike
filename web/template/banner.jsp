@@ -1,2 +1,2 @@
-<img src="<%= request.getContextPath() %>/imagens/stand-bike.png" 
-     width="100%" height="100px">
+<img src="<%= request.getContextPath() %>/imagens/stand-bike.png" alt="" title="Banner"
+     width="100%" height="150px">

@@ -1,7 +1,7 @@
 
 package model;
 
-import java.util.Date;
+import java.util.ArrayList;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import lombok.ToString;
 public class Perfil {
     private int idPerfil;
     private String nome;
-    private Date dataCadastro;
-    private int status;
+    private ArrayList<Menu> menus;
+    private ArrayList<Menu> naoMenus;
     
 }

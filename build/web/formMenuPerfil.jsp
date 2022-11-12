@@ -1,32 +1,38 @@
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" 
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0",
-              shrink-to-fit=no>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,
+              shrink-to-fit=no">
         <link rel="stylesheet" href="bootstrap/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="fonts/css/all.css" type="text/css">
         <link rel="stylesheet" href="css/menu.css" type="text/css">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
-        <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
-        <title>Lista de Menus</title>
+        <title>Gerenciar Perfil</title>
         <script type="text/javascript">
-            function confirmarExclusao(id,nome){
-                if(confirm('Deseja realmente excluir o menu ' + nome +'?')){
-                    location.href='gerenciarMenu?acao=deletar&idMenu='+id;
+            function confirmarExclusao(idMenu,nome, idPerfil){
+                if(confirm('Deseja realmente desvincular o menu ' + nome +'?')){
+                    location.href='gerenciarMenuPerfil.do?acao=desvincular&idMenu='+idMenu+'&idPerfil='+idPerfil;
                 }
             }
         </script>
     </head>
     <body>
+        <%
+            String mensagem = (String) request.getAttribute("mensagem");
+            if(mensagem != null){
+                out.println(
+                   "<script type='text/javascript'>" +
+                   "alert('" + mensagem + "');" +
+                   "</script>");
+            }
+            
+        %>
         <div id="container-fluid">
             
             <div id="container-fluid header">
@@ -36,18 +42,43 @@
                 <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
-                <div class="h-100 justify-content-center align-items-center">
-                    <div class="col-12">
-                        <h3 class="text-center mt-3">Listagem de Menus</h3>
-                        <div class="col-sm-12" style="padding-bottom: 15px">
-                            <a href="cadastrarMenu.jsp"
-                                class="btn btn-primary btn-md"
-                                role="button">Cadastrar Menu&nbsp;
-                                <i class="fa-solid fa-floppy-disk"></i>
+                <form action="gerenciarMenuPerfil.do" method="POST" 
+                      accept-charset="iso-8859-1,utf-8">
+                    <h3 class="text-center mt-5"><br>Gerenciar Perfil</h3>
+                    
+                    <input type="hidden" id="idPerfil" name="idPerfil" 
+                           value="${perfilv.idPerfil}">
+                    
+                    <div class="form-group row offset-md-2 mt-4">
+                        <label for="idnome" 
+                               class="col-md-2 form-label btn btn-primary btn-md">${perfilv.nome}</label>
+                    </div>
+                    <div class="form-group row offset-md-2 mt-4">
+                        <label for="menu" 
+                               class="col-md-2 form-label btn btn-primary btn-md">Menus</label>
+                               <select name="idMenu" required="" id="idMenu" class="form-control">
+                                   <option value="">Selecione o Menu</option>
+                                   <c:forEach var="m" items="${perfilv.naoMenus}">
+                                       <option value="${m.idMenu}">${m.nome}</option>
+                                   </c:forEach>
+                               </select>
+                    </div>
+                    
+                    <div class="d-md-flex justify-content-md-end mr-3">
+                        <button  class="btn btn-primary btn-md mr-2">
+                            Vincular&nbsp;
+                            <i class="fa-solid fa-floppy-disk"></i>
+                        </button>
+                        <a href="gerenciarPerfil?acao=listar"
+                           class="btn btn-warning btn-md" role="button">
+                            Voltar&nbsp;<i class="fa-solid fa-rotate-left"></i>
                             
-                            </a>
-                        </div>
-                        <div class="table-responsive">
+                        </a>
+                        
+                    </div> 
+                </form>
+                    
+                <div class="table-responsive">
                             <table class="table table-hover table bordered responsive" 
                                    id="listarMenus">
                                 <thead class="bg-primary">
@@ -57,11 +88,13 @@
                                         <th>Link</th>
                                         <th>Ícone</th>
                                         <th>Exibir</th>
-                                        <th>Ação</th>
+                                        <th>Desvincular</th>
                                     </tr>
                                 </thead>
+                                
+                                <jsp:useBean class="dao.MenuDAO" id="mDao"/>
                                 <tbody>
-                                <c:forEach var="m" items="${menus}" >
+                                <c:forEach var="m" items="${perfilv.menus}" >
                                     <tr>
                                         <td>${m.idMenu}</td>
                                         <td>${m.nome}</td>
@@ -78,12 +111,8 @@
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <a href="gerenciarMenu?acao=alterar&idMenu=${m.idMenu}"
-                                               class="btn btn-primary btn-sm" role="button">
-                                                Alterar&nbsp;<i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
                                             <button class="btn btn-danger btn-sm"
-                                                onclick="confirmExlusao(${m.idMenu},'${m.nome}')">
+                                                onclick="confirmarExlusao(${m.idMenu},'${m.nome}',${perfilv.idPerfil})">
                                                 Deletar&nbsp;<i class="glyphicon glyphicon-trash"></i>
                                             </button>
 
@@ -94,12 +123,6 @@
                             </table>
                             
                             
-                            
-                        </div><!-- fim da div responsive -->
-                    </div><!-- fim da div col-12 -->
-                    
-                    
-                </div><!-- fim da div justify-content -->
                 
             </div><!-- fim da div content -->
             
@@ -140,8 +163,18 @@
                         }
                     });
                 }); 
-            </script>
-              
+            </script>      
+
+            
+       </div>
+        
+        <!--JQuery.js -->
+        <script src="js/jquery.min.js"></script>
+        <!--Popper.js via cdn -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha512-Ua/7Woz9L5O0cwB/aYexmgoaD7lw3dWe9FvXejVdgqu71gRog3oJgjSWQR55fwWx+WKuk8cl7UwA1RS6QCadFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Bootstrap.js -->
+        <script src="js/bootstrap.min.js"></script>
+            
     </body>
 </html>
 

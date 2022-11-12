@@ -36,50 +36,51 @@ public class GerenciarMenu extends HttpServlet {
         try {
                
             if(acao.equals("listar")){
-                ArrayList<Menu> menus = new ArrayList<>();
-                menus = mdao.getLista();
-                for(Menu menu : menus ){
-                    System.out.println(menu);
-                }
-                RequestDispatcher dispatcher =  
-                        getServletContext().
-                                getRequestDispatcher("/listarMenus.jsp");
-                request.setAttribute("menus", menus);
-                dispatcher.forward(request, response);
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    ArrayList<Menu> menus = new ArrayList<>();
+                    menus = mdao.getLista();
+                    for(Menu menu : menus ){
+                        System.out.println(menu);
+                    }
+                    RequestDispatcher dispatcher =  
+                            getServletContext().
+                                    getRequestDispatcher("/listarMenus.jsp");
+                    request.setAttribute("menus", menus);
+                    dispatcher.forward(request, response);
+            }else{
+                mensagem = "Acesso Negado!";
+            }
                 
             }else if(acao.equals("alterar")){
-                m = mdao.getCarregarPorId(Integer.parseInt(idMenu));
-                if(m.getIdMenu() > 0){
-                    RequestDispatcher dispatcher =
-                            getServletContext().
-                                    getRequestDispatcher("/cadastrarMenu.jsp");
-                    request.setAttribute("menu", m);
-                    dispatcher.forward(request, response);
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    m = mdao.getCarregarPorId(Integer.parseInt(idMenu));
+                    if(m.getIdMenu() > 0){
+                        RequestDispatcher dispatcher =
+                                getServletContext().
+                                        getRequestDispatcher("/cadastrarMenu.jsp");
+                        request.setAttribute("menu", m);
+                        dispatcher.forward(request, response);
+                    }else{
+                        mensagem = "Menu não encontrado na base de dados!";
+                    }
                 }else{
-                    mensagem = "Menu não encontrado na base de dados!";
+                    mensagem = "Acesso Negado!";
                 }
-            }else if(acao.equals("desativar")){
-                m.setIdMenu(Integer.parseInt(idMenu));
-                if(mdao.desativar(m)){
-                    mensagem = "Menu desativado com sucesso na base de dados!";
-                    
+                
+            }else if(acao.equals("deletar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    m.setIdMenu(Integer.parseInt(idMenu));
+                    if(mdao.deletar(m)){
+                        mensagem = "Menu deletado com sucesso na base de dados!";
+
+                    }else{
+                        mensagem = "Falha ao deletar o menu da base de dados!";
+                    }
                 }else{
-                    mensagem = "Falha ao desativar o menu da base de dados!";
+                    mensagem = "Acesso Negado!";
                 }
                         
-            }else if(acao.equals("ativar")){
-                m.setIdMenu(Integer.parseInt(idMenu));
-                if(mdao.ativar(m)){
-                    mensagem = "Menu ativado com sucesso na base de dados!";
-                }else{
-                     mensagem = "Falha ao desativar o menu da base de dados!";
-                }
-            
-            
-            }else{
-                response.sendRedirect("index.jsp");
             }
-            
         } catch (SQLException e) {
             mensagem = "Erro: " + e.getMessage();
             e.printStackTrace();
@@ -108,7 +109,6 @@ public class GerenciarMenu extends HttpServlet {
         String link = request.getParameter("link");
         String icone = request.getParameter("icone");
         String exibir = request.getParameter("exibir");
-        String status = request.getParameter("status");
         String mensagem = "";
         
         Menu m = new Menu();
@@ -141,14 +141,6 @@ public class GerenciarMenu extends HttpServlet {
             m.setExibir(Integer.parseInt(exibir));
            
          }
-                    
-        if(status.equals("") || status.isEmpty()){
-            request.setAttribute("msg", "Informe o valor para o campo status!");
-            despacharRequisicao(request, response);
-            
-        }else{
-           m.setStatus(Integer.parseInt(status)); 
-        }
         
        
         

@@ -16,16 +16,23 @@
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
-        <title>Projeto ETB</title>
+        <title>Listar Perfis</title>
+        <script type="text/javascript">
+            function confirmarExclusao(id,nome){
+                if(confirm('Deseja realmente excluir o perfil ' + nome +'?')){
+                    location.href='gerenciarPerfil?acao=deletar&idPerfil='+id;
+                }
+            }
+        </script>
     </head>
     
         <div id="container-fluid">
             
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 <div class="h-100 justify-content-center align-items-center">
@@ -46,8 +53,6 @@
                                     <tr class="text-white">
                                         <th>Código</th>
                                         <th>Nome</th>
-                                        <th>Data de Cadastro</th>
-                                        <th>Status</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
@@ -57,57 +62,20 @@
                                         <td>${p.idPerfil}</td>
                                         <td>${p.nome}</td>
                                         <td>
-                                            <fmt:formatDate pattern = "dd/MM/yyyy" value = "${p.dataCadastro}" />
-                                        </td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${p.status == 1}">
-                                                    ativado
-                                                </c:when>
-                                                <c:otherwise>
-                                                    desativado
-                                                </c:otherwise>
-                                            </c:choose>
-                                            
-                                        </td>
-                                        <td>
-                                            <script type="text/javascript">
-                                                function confirmDesativar(id, nome){
-                                                    if(confirm('Deseja desativar o perfil ' +
-                                                       nome + '?')){
-                                                       location.href="gerenciarPerfil?acao=desativar&idPerfil="+id;
-                                                    }
-                                                }
-                                                
-                                                function confirmAtivar(id, nome){
-                                                    if(confirm('Deseja ativar o perfil ' +
-                                                       nome + '?')){
-                                                       location.href="gerenciarPerfil?acao=ativar&idPerfil="+id;
-                                                    }
-                                                }
-                                            </script>
                                             <a href="gerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}"
                                                class="btn btn-primary btn-sm" role="button">
                                                 Alterar&nbsp;<i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <c:choose>
-                                                <c:when test="${p.status == 1}">
-                                                    <button class="btn btn-danger btn-sm"
-                                                        onclick="confirmDesativar('${p.idPerfil}','${p.nome}')">
-                                                        Desativar&nbsp;
-                                                        <i class="fas fa-user fa-user-lock"></i>
-                                                    </button>
-                                                    
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <button class="btn btn-success btn-sm"
-                                                        onclick="confirmAtivar('${p.idPerfil}', '${p.nome}')">
-                                                        Ativar&nbsp;
-                                                        <i class="fa-solid fa-user-shield"></i>
-                                                    </button>
-                                                    
-                                                </c:otherwise>
-                                            </c:choose>
+                                               <button class="btn btn-danger btn-sm" 
+                                                    onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
+                                                Deletar&nbsp;<i class="glyphicon glyphicon-trash"></i>
+                                            </button>
+                                                
+                                                <a class="btn btn-default" 
+                                                   href="gerenciarMenuPerfil.do?acao=gerenciar&idPerfil=${p.idPerfil}">
+                                                    <i class="glyphicon">Acessos</i>
+                                                
+                                                </a>
                                         </td>
                                     </tr>
                                 </c:forEach>    

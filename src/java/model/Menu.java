@@ -18,8 +18,5 @@ public class Menu {
     private String link;
     private String icone;
     private int exibir;
-    private int status;
-    
-   
-    
+
 }

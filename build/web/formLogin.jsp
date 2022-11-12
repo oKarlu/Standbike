@@ -12,11 +12,22 @@
     <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+    
     <div class="card" id="telaLogin">
-        <img src="imagens/bicycle-fundo" class="card-img-top">
+        <%
+        String mensagem = (String)request.getSession().getAttribute("mensagem");
+        if(mensagem != null){
+            request.getSession().removeAttribute("mensagem");
+        
+    
+        %>
+        <div class="alert alert-info" ><%=mensagem%></div>
+        <%
+            }
+        %>
         <div class="card-body">
             <form action="gerenciarLogin.do" method="POST">
-                <div class="form-group col-sm-8">
+                <div class="form-group">
                   <label for="login" class="control-label">LOGIN</label>
                   <input type="text" name="login" class="form-control" id="login" aria-describedby="emailHelp" placeholder="INFORME SEU LOGIN">
                 </div>
@@ -24,9 +35,8 @@
                   <label for="senha" class="control-label">SENHA</label>
                   <input type="password" name="senha" class="form-control" id="senha" placeholder="INFORME SUA SENHA">
                 </div>
-                <div class="row">
-                    <button class="btn btn-success">ENTRAR</button>
-                </div>
+                    <button type="submit" class="btn btn-outline-success btn-block">ENTRAR</button>
+            </form>
         </div>
     </div>
     </body>
