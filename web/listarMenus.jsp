@@ -18,7 +18,13 @@
         <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
         <title>Lista de Menus</title>
-        
+        <script type="text/javascript">
+            function confirmarExclusao(id,nome){
+                if(confirm('Deseja realmente excluir o menu ' + nome +'?')){
+                    location.href='gerenciarMenu?acao=deletar&idMenu='+id;
+                }
+            }
+        </script>
     </head>
     <body>
         <%
@@ -87,20 +93,13 @@
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <script type="text/javascript">
-                                                function confirmAtivar(id, nome){
-                                                    if(confirm('Deseja deletar o menu ' +
-                                                       nome + '?')){
-                                                       location.href="gerenciarMenu?acao=deletar&idMenu="+id;
-                                                    }
-                                                }
-                                            </script>
                                             <a href="gerenciarMenu?acao=alterar&idMenu=${m.idMenu}"
                                                class="btn btn-primary btn-sm" role="button">
                                                 Alterar&nbsp;<i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <button class="btn btn-danger btn-sm" onclick="confirmarExclusao('${m.idMenu}', '${m.nome}'})">
-                                                Deletar&nbsp;<i class="fa-solid fa-solid fa-trash"></i>
+                                               <button class="btn btn-danger btn-sm" 
+                                                    onclick="confirmarExclusao(${m.idMenu}, '${m.nome}')">
+                                                Deletar&nbsp;<i class="glyphicon glyphicon-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
