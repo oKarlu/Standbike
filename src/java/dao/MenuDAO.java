@@ -41,9 +41,7 @@ public class MenuDAO {
     public boolean gravar(Menu m)throws SQLException{
         con = ConexaoFactory.conectar();
         if(m.getIdMenu() == 0){
-            sql = "INSERT INTO menu (nome, link, icone, exibir) " +
-                  "VALUES (?, ?, ?, ?)";
-            
+            sql = "INSERT INTO menu (nome, link, icone, exibir) VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, m.getNome());
             ps.setString(2, m.getLink());

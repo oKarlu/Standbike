@@ -59,7 +59,6 @@ public class GerenciarMenuPerfil extends HttpServlet {
         
         try{
             if(acao.equals("gerenciar")){
-                if(GerenciarLogin.verificarPermissao(request, response)){
                     p = pDao.getCarregarPorId(Integer.parseInt(idPerfil));
                     if(p.getIdPerfil() > 0){
                         RequestDispatcher disp = getServletContext().getRequestDispatcher("/formMenuPerfil.jsp");
@@ -68,9 +67,6 @@ public class GerenciarMenuPerfil extends HttpServlet {
                     }else{
                         mensagem = "Perfil não encontado";
                     }
-                }else{
-                    mensagem = "Acesso Negado!";
-                }
             }
             if(acao.equals("desvincular")){
                 String idMenu = request.getParameter("idMenu");

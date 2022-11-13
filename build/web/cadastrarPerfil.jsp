@@ -28,16 +28,16 @@
         %>
         <div id="container-fluid">
             
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 <form action="gerenciarPerfil" method="POST" 
                       accept-charset="iso-8859-1,utf-8">
-                    <h3 class="text-center mt-5">Cadastro de Perfil</h3>
+                    <h3 class="text-center mt-5"><br>Cadastro de Perfil</h3>
                     
                     <input type="hidden" id="idperfil" name="idPerfil" 
                            value="${perfil.idPerfil}">
@@ -48,36 +48,6 @@
                         <div class="col-md-6">
                             <input type="text" name="nome" id="idnome" 
                                    class="form-control" value="${perfil.nome}">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group row offset-md-2 mt-3">
-                        <label for="iddata" 
-                               class="col-md-2 form-label btn btn-primary btn-md">Data de Cadastro</label>
-                        <div class="col-md-6">
-                            <input type="date" name="dataCadastro" id="iddata" 
-                                   class="form-control" value="${perfil.dataCadastro}">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group row offset-md-2 mt-3">
-                        <label for="idstatus" 
-                               class="col-md-2 form-label btn btn-primary btn-md">Status</label>
-                        <div class="col-md-6">
-                            <select id="idstatus" name="status"
-                                    class="form-control-sm mt-3">
-                                <option value="">Escolha uma Opção</option>
-                                <option value="1"
-                                    <c:if test="${perfil.status == 1}"> 
-                                        selected=""
-                                    </c:if>>Ativado</option>
-                                <option value="0"
-                                    <c:if test="${perfil.status == 0}">
-                                        selected=""
-                                    </c:if>>Desativado</option>
-                                
-                                
-                            </select>
                             
                         </div>
                     </div>

@@ -17,7 +17,23 @@
         <title>Cadastro de Perfil</title>
     </head>
     <body>
-        <% 
+        <%
+        //Http 1.1
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        //HTTP 1.0
+        response.setHeader("Pragma", "no-cache");
+        //Proxie
+        response.setHeader("Expires", "0");
+        
+        if(session.getAttribute("ulogado") == null){
+            response.sendRedirect("formLogin.jsp");
+        }
+        
+        
+        
+        %>
+        <%
+
             String msg = (String) request.getAttribute("msg");
             if(msg != null){
                  out.println(
@@ -28,16 +44,16 @@
         %>
         <div id="container-fluid">
             
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 <form action="gerenciarMenu" method="POST" 
                       accept-charset="iso-8859-1,utf-8">
-                    <h3 class="text-center mt-5">Cadastro de Menus</h3>
+                    <h3 class="text-center mt-5"><br>Cadastro de Menus</h3>
                     
                     <input type="hidden" id="idmenu" name="idMenu" 
                            value="${menu.idMenu}">
@@ -97,32 +113,6 @@
                         </div>
                         
                         
-                    </div>
-                    
-                    <div class="form-group row offset-md-3 mt-3">
-                        <label for="idstatus" class="col-md-1 form-label btn btn-primary btn-md mt-2">Status</label>
-                        <div class="col-md-6">
-                            <select id="idstatus" name="status"
-                                    class="form-control-sm mt-2">
-                                <option value="" selected>Escolha uma opção</option>
-                                <c:choose>
-                                    <c:when test="${menu.status == 1}">
-                                        <option value="${menu.status}" selected>Ativado</option>
-                                        <option value="0">Desativado</option>
-                                        
-                                    </c:when>
-                                    <c:otherwise>
-                                        <option value="1">Ativado</option>
-                                        <option value="${menu.status == 0}" selected>Desativado</option>
-                                        
-                                    </c:otherwise>
-                                
-                                </c:choose>
-                                
-                                
-                            </select>
-                            
-                        </div>
                     </div>
                     <div class="d-md-flex justify-content-md-end mr-3">
                         <button  class="btn btn-primary btn-md mr-2">

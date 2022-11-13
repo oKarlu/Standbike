@@ -43,8 +43,7 @@ public class PerfilDAO {
             ps.setString(1, p.getNome());
             
         }else{
-            sql = "UPDATE perfil SET nome = ?" +
-                  "WHERE idPerfil = ?";
+            sql = "UPDATE perfil SET nome = ? WHERE idPerfil = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, p.getNome());
             ps.setInt(2, p.getIdPerfil());

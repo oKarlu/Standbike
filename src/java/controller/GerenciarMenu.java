@@ -138,7 +138,13 @@ public class GerenciarMenu extends HttpServlet {
             despacharRequisicao(request, response);
            
         }else{
-            m.setExibir(Integer.parseInt(exibir));
+            try{
+                m.setExibir(Integer.parseInt(exibir));
+            }catch(NumberFormatException e){
+                mensagem = "Erro: " + e.getMessage();
+                e.printStackTrace();
+            }
+            
            
          }
         

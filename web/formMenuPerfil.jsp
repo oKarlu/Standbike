@@ -15,11 +15,12 @@
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <title>Gerenciar Perfil</title>
         <script type="text/javascript">
-            function confirmarExclusao(idMenu,nome, idPerfil){
-                if(confirm('Deseja realmente desvincular o menu ' + nome +'?')){
-                    location.href='gerenciarMenuPerfil.do?acao=desvincular&idMenu='+idMenu+'&idPerfil='+idPerfil;
+            function confirmarDesvincular(idMenu, nome, idPerfil){
+                if(confirm("Deseja realmente desvincular o menu " + nome +"?")){
+                    location.href="gerenciarMenuPerfil.do?acao=desvincular&idMenu="+idMenu+"&idPerfil="+idPerfil;
                 }
             }
+ 
         </script>
     </head>
     <body>
@@ -111,10 +112,10 @@
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <button class="btn btn-danger btn-sm"
-                                                onclick="confirmarExlusao(${m.idMenu},'${m.nome}',${perfilv.idPerfil})">
-                                                Deletar&nbsp;<i class="glyphicon glyphicon-trash"></i>
+                                            <button class="btn btn-danger btn-sm" onclick="confirmarDesvincular(${m.idMenu}, '${m.nome}', ${perfilv.idPerfil})">
+                                                Desvincular&nbsp;<i class="fa-solid fa-solid fa-trash"></i>
                                             </button>
+                                                
 
                                         </td>
                                     </tr>
