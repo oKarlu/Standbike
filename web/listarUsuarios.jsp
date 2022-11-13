@@ -31,7 +31,7 @@
             <div id="conteudo" class="bg-background">
                 <div class="h-100 justify-content-center align-items-center">
                     <div class="col-12">
-                        <h3 class="text-center mt-3">Listagem de Usuários</h3>
+                        <br><br><br><h3 class="text-center mt-3">Listagem de Usuários</h3>
                         <div class="col-sm-12" style="padding-bottom: 15px">
                             <a href="cadastrarUsuario.jsp"
                                 class="btn btn-primary btn-md"
@@ -41,7 +41,7 @@
                             </a>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-hover table bordered responsive" 
+                            <table class="table table-hover table-bordered responsive" 
                                    id="listarUsuarios">
                                 <thead class="bg-primary">
                                     <tr class="text-white">

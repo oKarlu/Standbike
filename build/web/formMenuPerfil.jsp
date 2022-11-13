@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="fonts/css/all.css" type="text/css">
         <link rel="stylesheet" href="css/menu.css" type="text/css">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
+        <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
+        <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
         <title>Gerenciar Perfil</title>
         <script type="text/javascript">
             function confirmarDesvincular(idMenu, nome, idPerfil){
@@ -54,15 +56,17 @@
                         <label for="idnome" 
                                class="col-md-2 form-label btn btn-primary btn-md">${perfilv.nome}</label>
                     </div>
-                    <div class="form-group row offset-md-2 mt-4">
+                    <div class="form-group row offset-md-2 mt-3">
                         <label for="menu" 
                                class="col-md-2 form-label btn btn-primary btn-md">Menus</label>
-                               <select name="idMenu" required="" id="idMenu" class="form-control">
-                                   <option value="">Selecione o Menu</option>
-                                   <c:forEach var="m" items="${perfilv.naoMenus}">
-                                       <option value="${m.idMenu}">${m.nome}</option>
-                                   </c:forEach>
-                               </select>
+                               <div class="col-md-6">
+                                <select name="idMenu" required="" id="idMenu" class="form-control">
+                                    <option value="">Selecione o Menu</option>
+                                    <c:forEach var="m" items="${perfilv.naoMenus}">
+                                        <option value="${m.idMenu}">${m.nome}</option>
+                                    </c:forEach>
+                                </select>
+                                </div>
                     </div>
                     
                     <div class="d-md-flex justify-content-md-end mr-3">
@@ -79,8 +83,10 @@
                     </div> 
                 </form>
                     
-                <div class="table-responsive">
-                            <table class="table table-hover table bordered responsive" 
+                <div class="h-100 justify-content-center align-items-center">
+                    <h3 class="text-center"><br>Menus Vinculados ao Perfil</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered responsive" 
                                    id="listarMenus">
                                 <thead class="bg-primary">
                                     <tr class="text-white">
@@ -93,7 +99,7 @@
                                     </tr>
                                 </thead>
                                 
-                                <jsp:useBean class="dao.MenuDAO" id="mDao"/>
+                                <%-- <jsp:useBean class="dao.MenuDAO" id="mDao"/> --%>
                                 <tbody>
                                 <c:forEach var="m" items="${perfilv.menus}" >
                                     <tr>
@@ -122,6 +128,7 @@
                                 </c:forEach>    
                                 </tbody>
                             </table>
+                        </div>
                             
                             
                 

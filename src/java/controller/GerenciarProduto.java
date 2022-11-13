@@ -9,13 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Produto;
 import dao.ProdutoDAO;
+import java.io.File;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.Part;
 
 @WebServlet(name = "GerenciarProduto", urlPatterns = {"/gerenciarProduto"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 5, //10MB
+        maxFileSize = 1024 * 1024 * 1024, //1GB
+        maxRequestSize = 1024 * 1024 * 50) //50GB
 public class GerenciarProduto extends HttpServlet {
 
     @Override
@@ -33,45 +39,61 @@ public class GerenciarProduto extends HttpServlet {
         
         try {
             if(acao.equals("listar")){
-                ArrayList<Produto> produtos = new ArrayList<>();
-                produtos = cdao.getLista();
-                for(Produto produto: produtos){
-                    System.out.println(produto);
-                }
-                RequestDispatcher dispatcher =
-                        getServletContext().
-                                getRequestDispatcher("/listarProdutos.jsp");
-                request.setAttribute("produtos", produtos);
-                dispatcher.forward(request, response);
-            }else if(acao.equals("alterar")){
-                c = cdao.getCarregarPorId(Integer.parseInt(idProduto));
-                if(c.getIdProduto() > 0 ){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    ArrayList<Produto> produtos = new ArrayList<>();
+                    produtos = cdao.getLista();
+                    for(Produto produto: produtos){
+                        System.out.println(produto);
+                    }
                     RequestDispatcher dispatcher =
-                        getServletContext().
-                            getRequestDispatcher("/cadastrarProduto.jsp");
-                    request.setAttribute("produto", c);
+                            getServletContext().
+                                    getRequestDispatcher("/listarProdutos.jsp");
+                    request.setAttribute("produtos", produtos);
                     dispatcher.forward(request, response);
-                    
                 }else{
-                    mensagem = "Produto não encontrado na base dados!";
+                    mensagem = "Acesso Negado!";
+                }
+            }else if(acao.equals("alterar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    c = cdao.getCarregarPorId(Integer.parseInt(idProduto));
+                    if(c.getIdProduto() > 0 ){
+                        RequestDispatcher dispatcher =
+                            getServletContext().
+                                getRequestDispatcher("/cadastrarProduto.jsp");
+                        request.setAttribute("produto", c);
+                        dispatcher.forward(request, response);
+                    
+                    }else{
+                        mensagem = "Produto não encontrado na base dados!";
+                    }
+                }else{
+                    mensagem = "Acesso Negado!";
                 }
                 
+                
             }else if(acao.equals("desativar")){
-                c.setIdProduto(Integer.parseInt(idProduto));
-                if(cdao.desativar(c)){
-                    mensagem = "Produto desativado com sucesso!";
-                    
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    c.setIdProduto(Integer.parseInt(idProduto));
+                    if(cdao.desativar(c)){
+                        mensagem = "Produto desativado com sucesso!";
+
+                    }else{
+                        mensagem = "Falha ao desativar o produto!";
+                    }
                 }else{
-                    mensagem = "Falha ao desativar o produto!";
+                    mensagem = "Acesso Negado!";
                 }
-          
                
             }else if(acao.equals("ativar")){
-                c.setIdProduto(Integer.parseInt(idProduto));
-                if(cdao.ativar(c)){
-                     mensagem = "Produto ativado com sucesso!";
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    c.setIdProduto(Integer.parseInt(idProduto));
+                    if(cdao.ativar(c)){
+                         mensagem = "Produto ativado com sucesso!";
+                    }else{
+                        mensagem = "Falha ao ativar o produto!";
+                    }
                 }else{
-                    mensagem = "Falha ao ativar o produto!";
+                    mensagem = "Acesso Negado!";
                 }
             
             
@@ -106,6 +128,15 @@ public class GerenciarProduto extends HttpServlet {
         String estoque = request.getParameter("estoque");
         String preco = request.getParameter("preco");
         String status = request.getParameter("status");
+        
+        Part parte = request.getPart("nomeArquivo");
+        String fileName = extractFileName(parte);
+        String savePath = "H:\\TCC\\Standbike\\web\\imagens_produto\\" + fileName;
+        
+        File fileSaveDir = new File(savePath);
+        parte.write(savePath + File.separator);
+        String filePath = savePath + File.separator + fileName;
+        
         String mensagem = "";
         
         Produto p = new Produto();
@@ -124,14 +155,6 @@ public class GerenciarProduto extends HttpServlet {
                 p.setNome(nome);
             }
             
-            if(descricao.isEmpty() || descricao.equals("")){
-                request.setAttribute("msg", "Informe a descricao do produto!");
-                despacharRequisicao(request, response);
-               
-            }else{
-                p.setDescricao(descricao);
-            }
-            
             if(estoque.isEmpty() || estoque.equals("")){
                 request.setAttribute("msg", "Informe o estoque do produto!");
                 despacharRequisicao(request, response);
@@ -140,21 +163,27 @@ public class GerenciarProduto extends HttpServlet {
                 p.setEstoque(Integer.parseInt(estoque));
             }
             
+            double novoPreco = 0;
             if(preco.isEmpty() || preco.equals("")){
                 request.setAttribute("msg", "Informe o preco do produto!");
                 despacharRequisicao(request, response);
                
             }else{
-                p.setPreco(Double.parseDouble(preco));
+                novoPreco = Double.parseDouble(preco.replace(".", "").replace(",", "."));
             }
             
             if(status.isEmpty() || status.equals("")){
-                request.setAttribute("msg", "Informe o status do Produto!");
+                request.setAttribute("msg", "Informe o status do produto!");
                 despacharRequisicao(request, response);
             }else{
                 p.setStatus(Integer.parseInt(status));
             }
             
+            p.setPreco(novoPreco);
+            p.setDescricao(descricao);
+            p.setNomeArquivo(fileName);
+            p.setCaminho(savePath);
+ 
             if(pdao.gravar(p)){
                 mensagem = "Produto gravado com sucesso na base de dados!";
             }else{
@@ -184,5 +213,16 @@ public class GerenciarProduto extends HttpServlet {
                         getRequestDispatcher("/cadastrarProduto.jsp").
                             forward(request, response);
         
+    }
+    
+    private String extractFileName(Part parte){
+        String contentDisp = parte.getHeader("content-disposition");
+        String[] items = contentDisp.split(";");
+        for(String s : items){
+            if(s.trim().startsWith("filename")){
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+            }
+        }
+        return "";
     }
 }

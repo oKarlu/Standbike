@@ -13,9 +13,24 @@
         <link rel="stylesheet" href="fonts/css/all.css" type="text/css">
         <link rel="stylesheet" href="css/menu.css" type="text/css">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <title>Cadastro de Usuario</title>
+        <title>Cadastro de Produto</title>
     </head>
     <body>
+        <%
+        //Http 1.1
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        //HTTP 1.0
+        response.setHeader("Pragma", "no-cache");
+        //Proxie
+        response.setHeader("Expires", "0");
+        
+        if(session.getAttribute("ulogado") == null){
+            response.sendRedirect("formLogin.jsp");
+        }
+        
+        
+        
+        %>
         <% 
             String msg = (String) request.getAttribute("msg");
             if(msg != null){
@@ -36,7 +51,8 @@
             </div>
             <div id="conteudo" class="bg-background">
                 <form action="gerenciarProduto" method="POST" 
-                      accept-charset="iso-8859-1,utf-8">
+                      accept-charset="iso-8859-1,utf-8"
+                      enctype="multipart/form-data">
                     <h3 class="text-center mt-5">Cadastro de Produto</h3>
                     
                     <input type="hidden" id="idproduto" name="idProduto" 
@@ -44,7 +60,7 @@
                     
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idnome" 
-                               class="col-md-1 form-label btn btn-primary btn-md">Nome</label>
+                               class="col-md-2 form-label btn btn-primary btn-md">Nome</label>
                         <div class="col-md-6">
                             <input type="text" name="nome" id="idnome" 
                                    class="form-control" value="${produto.nome}">
@@ -52,8 +68,8 @@
                         </div>
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
-                        <label for="idnome" 
-                               class="col-md-1 form-label btn btn-primary btn-md">Descricao</label>
+                        <label for="iddescricao" 
+                               class="col-md-2 form-label btn btn-primary btn-md">Descrição</label>
                         <div class="col-md-6">
                             <input type="text" name="descricao" id="iddescricao" 
                                    class="form-control" value="${produto.descricao}">
@@ -61,8 +77,8 @@
                         </div>
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
-                        <label for="idendereco" 
-                            class="col-md-1 form-label btn btn-primary btn-md">Estoque</label>
+                        <label for="idestoque" 
+                            class="col-md-2 form-label btn btn-primary btn-md">Estoque</label>
                         <div class="col-md-6">
                             <input type="number" name="estoque" id="idestoque" min="0" 
                                    class="form-control" value="${produto.estoque}">
@@ -70,16 +86,25 @@
                         </div>
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
-                        <label for="idemail" 
-                            class="col-md-1 form-label btn btn-primary btn-md">Preço</label>
+                        <label for="idpreco" 
+                            class="col-md-2 form-label btn btn-primary btn-md">Preço</label>
                         <div class="col-md-6">
                             <input type="number" name="preco" id="idpreco" step="any" 
                                    class="form-control" value="${produto.preco}">
                             
                         </div>
                     </div>
+                    <div class="form-group row offset-md-3 mt-4">
+                        <label for="idfile" 
+                            class="col-md-2 form-label btn btn-primary btn-md">Imagem</label>
+                        <div class="col-md-6">
+                            <input type="file" multiple="multiple" name="nomeArquivo" id="idfile"
+                                   class="form-control" value="${produto.nomeArquivo}">
+                            
+                        </div>
+                    </div>
                     <div class="form-group row offset-md-3 mt-3">
-                        <label for="idstatus" class="col-md-1 form-label btn btn-primary btn-md mt-2">Status</label>
+                        <label for="idstatus" class="col-md-2 form-label btn btn-primary btn-md mt-2">Status</label>
                         <div class="col-md-6">
                             <select id="idstatus" name="status"
                                 class="form-control-sm mt-2">

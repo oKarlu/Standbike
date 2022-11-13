@@ -96,13 +96,15 @@ public class GerenciarLogin extends HttpServlet {
     private static void exibirMensagem(String mensagem){
         try{
             PrintWriter out = response.getWriter();
-            out.print("<script>");
-            out.print("alert('"+mensagem+"');");
-            out.print("history.back();");
-            out.print("</script>");
-            out.close();
+            out.print(
+                "<script type='text/javascript'>" +
+                "alert('" + mensagem + "');"+
+                "history.back();" +
+                "</script>");
+        out.close();
                     
-        }catch(Exception e){
+        } catch (IOException e) {
+            System.out.println("Erro: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -122,10 +124,10 @@ public class GerenciarLogin extends HttpServlet {
                 }
                 u = (Usuario) request.getSession().getAttribute("ulogado");
                 if(u == null){
-                    sessao.setAttribute("mensagem", "Você não está autenticado!");
+                    sessao.setAttribute("msg", "Você não está autenticado!");
                     response.sendRedirect("formLogin.jsp");
                 }else{
-                    boolean possuiAcesso=false;
+                    boolean possuiAcesso = false;
                     for(Menu m: u.getPerfil().getMenus()){
                         if(uri.contains(m.getLink())){
                             possuiAcesso = true;

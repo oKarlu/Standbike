@@ -37,7 +37,7 @@
             <div id="conteudo" class="bg-background">
                 <div class="h-100 justify-content-center align-items-center">
                     <div class="col-12">
-                        <h3 class="text-center mt-3">Listagem de Perfis</h3>
+                        <br><br><br><h3 class="text-center mt-3">Listagem de Perfis</h3>
                         <div class="col-sm-12" style="padding-bottom: 15px">
                             <a href="cadastrarPerfil.jsp"
                                 class="btn btn-primary btn-md"
@@ -47,7 +47,7 @@
                             </a>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-hover table bordered responsive" 
+                            <table class="table table-hover table-bordered responsive" 
                                    id="listarPerfis">
                                 <thead class="bg-primary">
                                     <tr class="text-white">
@@ -68,13 +68,14 @@
                                             </a>
                                                <button class="btn btn-danger btn-sm" 
                                                     onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
-                                                Deletar&nbsp;<i class="glyphicon glyphicon-trash"></i>
+                                                Deletar&nbsp;<i class="fa-solid fa-trash"></i>
                                             </button>
                                                 
-                                                <a class="btn btn-default" 
-                                                   href="gerenciarMenuPerfil.do?acao=gerenciar&idPerfil=${p.idPerfil}">
-                                                    <i class="glyphicon">Acessos</i>
-                                                
+                                                <a href="gerenciarMenuPerfil.do?acao=gerenciar&idPerfil=${p.idPerfil}"
+                                                   class="btn btn-secondary btn-sm" 
+                                                   role="button">
+                                                   Acessos&nbsp;
+                                                   <i class="fas fa-user-tag"></i>
                                                 </a>
                                         </td>
                                     </tr>
