@@ -48,17 +48,19 @@ public class GerenciarCarrinho extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         String mensagem = "";
+        Venda v =(Venda) session.getAttribute("venda");
+        String acao = request.getParameter("acao");
+        String idProduto = request.getParameter("idProduto");
+        String qtd = request.getParameter("qtd");
         
         try{
-            Venda v =(Venda) session.getAttribute("venda");
-            ArrayList<VendaProduto> carrinho = v.getCarrinho();
-            String acao = request.getParameter("acao");
-            String idProduto = request.getParameter("idProduto");
-            String qtd = request.getParameter("qtd");
+            Produto produto = new Produto();
             ProdutoDAO pDao = new ProdutoDAO();
+            ArrayList<VendaProduto> carrinho = v.getCarrinho();
+            
             if(acao.equals("add")){
                 if(GerenciarLogin.verificarPermissao(request, response)){
-                    Produto produto = new Produto();
+                    
                     produto = pDao.getCarregarPorId(Integer.parseInt(idProduto));
                     VendaProduto vp = new VendaProduto();
                     vp.setProduto(produto);
@@ -74,15 +76,11 @@ public class GerenciarCarrinho extends HttpServlet {
                     mensagem = "Acesso Negado!";
                 }
             }else if(acao.equals("del")){
-                if(GerenciarLogin.verificarPermissao(request, response)){
                     int index = Integer.parseInt(request.getParameter("index"));
                     carrinho.remove(index);
                     v.setCarrinho(carrinho);
                     session.setAttribute("venda", v);
                     response.sendRedirect("formFinalizarVenda.jsp");
-                }else{
-                    mensagem = "Acesso Negado!";
-                }
             }
             
         }catch (SQLException e){

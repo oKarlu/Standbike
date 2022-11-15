@@ -115,7 +115,7 @@
                                            <div>
                                                <input type="hidden" name="idProduto"/>
                                                <input type="numner" name="qtd" value="1"
-                                                      size="4" maxlength="3" max="<%=produto.getEstoque()%>"/><!-- readonly -->
+                                                      size="4" maxlength="3" max="<%=produto.getEstoque()%>" readonly/><!-- readonly  -->
                                            </div>
                                            <div>
                                                <a href="gerenciarCarrinho?acao=add&idProduto=<%=produto.getIdProduto()%>&qtd=1"
