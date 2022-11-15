@@ -1,10 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@page import="model.VendaProduto"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="dao.ClienteDAO"%>
+<%@page import="model.Usuario"%>
 <%@page import="model.Cliente"%>
 <%@page import="model.Venda"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="model.VendaProduto"%>
+<%@page import="model.Produto"%>
+<%@page import="dao.ClienteDAO"%>
+<%@page import="dao.ProdutoDAO"%>
+<%@page import="controller.GerenciarLogin"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.sql.SQLException"%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -21,152 +27,121 @@
         <title>Cadastro de Venda</title>
     </head>
     <body>
-        <div class="container-fluid">
-            <%@include file="template/banner.jsp" %>
-            <%@include file="template/menu.jsp" %>
-            <<h3>Cadastrar Nova Venda</h3>
-            <%
-            String msg = (String) request.getAttribute("msg");
-            if(msg != null){
-                out.println(
-                   "<script type='text/javascript'>" +
-                   "alert('" + msg + "');" +
-                   "</script>");
-            }
-            
-            Venda v = new Venda();
-            Cliente c = new Cliente();
-            try{
-                String acao = request.getParameter("acao");
-                ClienteDAO cDao = new ClienteDAO();
-                if(acao.equals("novo")){
-                    int idCliente = Integer.parseInt(request.getParameter("idCliente"));
-                    c = cDao.getCarregarPorId(idCliente);
-                    v.setCliente(c);
-                    v.setVendedor(ulogado);
-                    v.setCarrinho(new ArrayList<>());
-                    session.setAttribute("venda", v);
-                }else{
-                    v = (Venda)session.getAttribute("venda");
-                }
-                
-            }catch(Exception e){
-                out.print("Erro:" + e);
-            }
-            
+        <%
+        //Http 1.1
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        //HTTP 1.0
+        response.setHeader("Pragma", "no-cache");
+        //Proxie
+        response.setHeader("Expires", "0");
         %>
-        
-            <br /><br />
-            Vendedor: <%=v.getVendedor().getNome()%>
-            <br/>
-            Cliente: <%=v.getCliente().getNome()%>
-            <br/>
-            <h4>Catálogo: (<%=v.getCarrinho().size()%> itens no Carrinho</h4>
-            <jsp:useBean class="dao.ProdutoDAO" id="produto"/>
-            <c:forEach var="p" itens="${produto.lista}">
-                <div id="prod${p.idProduto}">
-                    <form action="gerenciarCarrinho.do" method="GET">
-                        <input type="hidden" name="acao" value="add">
-                        <input type="hidden" name="idProduto" value="${p.idProduto}"
-                        ${p.nome}
-                        <input type="number" name="quantidade" value="1" style="width: 40px">
-                        <button class="btn btn-default">
-                            <i class="glyphicon glyphicon">Comprar</i>
-                        </button>
-                            
-                    </form>
-                
-                </div>
-                
-            </c:forEach>
+        <div id="container-fluid">
             
-            <a href="listarCliente.jsp" class="btn btn-warning">Cancelar</a>
-            <a href="formFinalizarVenda.jsp" class="btn btn-sucess">Finalizar Venda</a>
-        </div>
-            
-        <!-- a 
-        <div id="container-fluid"> 
-            
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
-                <form action="gerenciarPerfil" method="POST" 
-                      accept-charset="iso-8859-1,utf-8">
-                    <h3 class="text-center mt-5">Cadastrar Nova Venda</h3>
+                <%
+                   Venda v = new Venda();
+                   Cliente c = new Cliente();
+                   ulogado = GerenciarLogin.verificarAcesso(request, response);
+                   request.setAttribute("ulogado", ulogado);
+                   try{
+                        String acao = request.getParameter("acao");
+                        ClienteDAO cDao = new ClienteDAO();
+                        if(acao.equals("novo")){
+                            int idCliente = Integer.parseInt(request.getParameter("idCliente"));
+                            c = cDao.getCarregarPorId(idCliente);
+                            v.setCliente(c);
+                            v.setVendedor(ulogado);
+                            v.setCarrinho(new ArrayList<VendaProduto>());
+                            session.setAttribute("venda", v);
+                        }else{
+                            v = (Venda) session.getAttribute("venda");
+                        }
                     
-                    <input type="hidden" id="idperfil" name="idPerfil" 
-                           value="${perfil.idPerfil}">
-                    
-                    <div class="form-group row offset-md-2 mt-4">
-                        <label for="idnome" 
-                               class="col-md-2 form-label btn btn-primary btn-md">Nome</label>
-                        <div class="col-md-6">
-                            <input type="text" name="nome" id="idnome" 
-                                   class="form-control" value="${perfil.nome}">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group row offset-md-2 mt-3">
-                        <label for="iddata" 
-                               class="col-md-2 form-label btn btn-primary btn-md">Data de Cadastro</label>
-                        <div class="col-md-6">
-                            <input type="date" name="dataCadastro" id="iddata" 
-                                   class="form-control" value="${perfil.dataCadastro}">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group row offset-md-2 mt-3">
-                        <label for="idstatus" 
-                               class="col-md-2 form-label btn btn-primary btn-md">Status</label>
-                        <div class="col-md-6">
-                            <select id="idstatus" name="status"
-                                    class="form-control-sm mt-3">
-                                <option value="">Escolha uma Opção</option>
-                                <option value="1"
-                                    <c:if test="${perfil.status == 1}"> 
-                                        selected=""
-                                    </c:if>>Ativado</option>
-                                <option value="0"
-                                    <c:if test="${perfil.status == 0}">
-                                        selected=""
-                                    </c:if>>Desativado</option>
-                                
-                                
-                            </select>
-                            
-                        </div>
-                    </div>
-                    <div class="d-md-flex justify-content-md-end mr-3">
-                        <button  class="btn btn-primary btn-md mr-2">
-                            Gravar&nbsp;
-                            <i class="fa-solid fa-floppy-disk"></i>
-                        </button>
-                        <a href="gerenciarPerfil?acao=listar"
-                           class="btn btn-warning btn-md" role="button">
-                            Voltar&nbsp;<i class="fa-solid fa-rotate-left"></i>
-                            
-                        </a>
                         
-                    </div>
+                    }catch(SQLException e){
+                        out.print("Erro: " + e.getMessage());
+                        e.printStackTrace();
+                   }
+
+                %>
+                <div class="h-100 justify-content-center align-items-center">
+                    <div class="col-12">
+                        <div>
+                            <h4 class="text-center mt-1">
+                                <br><br><br>Carrinho(<%= v.getCarrinho().size() %>)
+                            </h4>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <%
+                                           ProdutoDAO pDao = new ProdutoDAO();
+                                           ArrayList<Produto> lista = pDao.getLista();
+                                           int salto = 0;
+                                           for(Produto produto : lista){
+                                           
+                                        %>
+                                       <th>
+                                           <div>
+                                               <img class="center" width="140" height="140"
+                                                    src="<%= produto.getCaminho().concat(produto.getNomeArquivo())%>">
+                                           </div>
+                                           <div>
+                                               <%=produto.getNome() %>
+                                           </div>
+                                           <div>
+                                               R$&nbsp;<fmt:formatNumber pattern="#,##0.00" 
+                                                        value="<%= produto.getPreco()%>" />
+                                           </div>
+                                           <div>
+                                               <input type="numner" name="qtd" value="1"
+                                                      size="4" maxlength="3" max="<%=produto.getEstoque()%>"/><!-- readonly -->
+                                           </div>
+                                           <div>
+                                               <a href="gerenciarCarrinho?acao=add&idProduto=<%=produto.getIdProduto()%>&qtd=1"
+                                                  class="btn btn-primary btn-sm" role="button">
+                                                   Adicionar&nbsp;<i class="fas fa-cart-plus"></i>
+                                               </a>
+                                           </div>
+                                        <% salto++;
+                                            if(salto == 3){
+                                        %>
+                                        </th>
+                                    </tr>
+                                        <%
+                                            salto = 0;
+                                            }
+                                        }
+                                        %>
+                                        
+                                </thead>
+                            </table>
                     
                     
-                    
-                </form>
+                        </div>
                 
+                    </div>
+                </div>
+  
             </div>
-            
-       </div>-->
+        </div>
         
         <!--JQuery.js -->
         <script src="js/jquery.min.js"></script>
         <!--Popper.js via cdn -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha512-Ua/7Woz9L5O0cwB/aYexmgoaD7lw3dWe9FvXejVdgqu71gRog3oJgjSWQR55fwWx+WKuk8cl7UwA1RS6QCadFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!-- Bootstrap.js -->
-        <script src="js/bootstrap.min.js"></script> !>
-            
+        <script src="js/bootstrap.min.js"></script>
+        <script src="datatables/js/jquery.dataTables.min.js"></script>
+        <script src="datatables/js/dataTables.bootstrap4.min.js"></script>
+       
+              
     </body>
 </html>

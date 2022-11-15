@@ -34,14 +34,14 @@ public class GerenciarProduto extends HttpServlet {
         String idProduto = request.getParameter("idProduto");
         String mensagem = "";
         
-        Produto c = new Produto();
-        ProdutoDAO cdao = new ProdutoDAO();
+        Produto p = new Produto();
+        ProdutoDAO pdao = new ProdutoDAO();
         
         try {
             if(acao.equals("listar")){
                 if(GerenciarLogin.verificarPermissao(request, response)){
                     ArrayList<Produto> produtos = new ArrayList<>();
-                    produtos = cdao.getLista();
+                    produtos = pdao.getLista();
                     for(Produto produto: produtos){
                         System.out.println(produto);
                     }
@@ -55,12 +55,12 @@ public class GerenciarProduto extends HttpServlet {
                 }
             }else if(acao.equals("alterar")){
                 if(GerenciarLogin.verificarPermissao(request, response)){
-                    c = cdao.getCarregarPorId(Integer.parseInt(idProduto));
-                    if(c.getIdProduto() > 0 ){
+                    p = pdao.getCarregarPorId(Integer.parseInt(idProduto));
+                    if(p.getIdProduto() > 0 ){
                         RequestDispatcher dispatcher =
                             getServletContext().
                                 getRequestDispatcher("/cadastrarProduto.jsp");
-                        request.setAttribute("produto", c);
+                        request.setAttribute("produto", p);
                         dispatcher.forward(request, response);
                     
                     }else{
@@ -73,8 +73,8 @@ public class GerenciarProduto extends HttpServlet {
                 
             }else if(acao.equals("desativar")){
                 if(GerenciarLogin.verificarPermissao(request, response)){
-                    c.setIdProduto(Integer.parseInt(idProduto));
-                    if(cdao.desativar(c)){
+                    p.setIdProduto(Integer.parseInt(idProduto));
+                    if(pdao.desativar(p)){
                         mensagem = "Produto desativado com sucesso!";
 
                     }else{
@@ -86,8 +86,8 @@ public class GerenciarProduto extends HttpServlet {
                
             }else if(acao.equals("ativar")){
                 if(GerenciarLogin.verificarPermissao(request, response)){
-                    c.setIdProduto(Integer.parseInt(idProduto));
-                    if(cdao.ativar(c)){
+                    p.setIdProduto(Integer.parseInt(idProduto));
+                    if(pdao.ativar(p)){
                          mensagem = "Produto ativado com sucesso!";
                     }else{
                         mensagem = "Falha ao ativar o produto!";

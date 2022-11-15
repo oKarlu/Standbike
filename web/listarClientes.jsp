@@ -44,7 +44,6 @@
                                    id="listarClientes">
                                 <thead class="bg-primary">
                                     <tr class="text-white">
-                                        <th>Código</th>
                                         <th>Nome</th>
                                         <th>Cpf</th>
                                         <th>Endereco</th>
@@ -58,7 +57,6 @@
                                 <tbody>
                                 <c:forEach items="${clientes}" var="c">
                                     <tr>
-                                        <td>${c.idCliente}</td>
                                         <td>${c.nome}</td>
                                         <td>${c.cpf}</td>
                                         <td>${c.endereco}</td>
@@ -116,8 +114,9 @@
                                                     
                                                 </c:otherwise>
                                             </c:choose>
-                                            <a href="formVenda.jsp?acao=novo&idCliente=${c.idCliente}" class="btn btn-primary btn-sm" role="button">
-                                                <i class="glyphicon glyphicon">Realizar Venda</i>
+                                            <a href="formVenda.jsp?acao=novo&idCliente=${c.idCliente}" 
+                                               class="btn btn-primary btn-sm" role="button">Realizar Venda&nbsp;
+                                                <i class="fas fa-shopping-cart"></i>
                                             </a>    
                                         </td>
                                     </tr>

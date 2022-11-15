@@ -56,11 +56,13 @@
                                 <tbody>
                                 <c:forEach items="${produtos}" var="p">
                                     <tr>
-                                        <td>${p.idProduto}</td>
+                                        <td><img class="center" width="140" height="140"
+                                                    src="${p.caminho}+${p.nomeArquivo}">
+                                            <br>${p.idProduto}</td>
                                         <td>${p.nome}</td>
                                         <td>${p.descricao}</td>
                                         <td>${p.estoque}</td>
-                                        <td>R$: ${p.preco}</td>
+                                        <td><fmt:formatNumber  pattern="#,##0.00" value="${p.preco}"/></td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${p.status == 1}">

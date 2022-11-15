@@ -89,8 +89,8 @@
                         <label for="idpreco" 
                             class="col-md-2 form-label btn btn-primary btn-md">Preço</label>
                         <div class="col-md-6">
-                            <input type="number" name="preco" id="idpreco" step="any" 
-                                   class="form-control" value="${produto.preco}">
+                            <input type="text" name="preco" id="idpreco" step="any" 
+                                   class="form-control" value="<fmt:formatNumber pattern="#,##0.00" value="${produto.preco}">
                             
                         </div>
                     </div>

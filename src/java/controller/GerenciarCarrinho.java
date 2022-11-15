@@ -125,3 +125,10 @@ public class GerenciarCarrinho extends HttpServlet {
     }// </editor-fold>
 
 }
+
+private int isExisting(int id, ArrayList<VendaProduto> carrinho){
+    for(int i = 0; i < carrinho.size(); i++)
+        if(carrinho.get(i).getProduto().getIdProduto == id)
+            return i;
+        return -1;
+}

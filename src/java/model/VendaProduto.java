@@ -7,15 +7,20 @@ import lombok.Setter;
 import lombok.ToString;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Getter
 @Setter
 public class VendaProduto {
-    private int  idVendaProduto;
-    private int quantidade;
-    private double valor;
+    private long idVendaProduto;
+    private int qtd;
+    private double precoUnitario;
     private Venda venda;
-    private Produto produto;
+    private Produto produto = new Produto();
     
+    public VendaProduto(Produto produto, int qtd){
+        this.produto = produto;
+        this.qtd = qtd;
+    }
     
 }

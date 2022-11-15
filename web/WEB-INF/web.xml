@@ -14,7 +14,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>GerenciarCarrinho</servlet-name>
-        <url-pattern>/gerenciarCarrinho.do</url-pattern>
+        <url-pattern>/gerenciarCarrinho</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GerenciarLogin</servlet-name>
