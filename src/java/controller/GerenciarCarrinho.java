@@ -7,6 +7,7 @@ package controller;
 
 import dao.ProdutoDAO;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -23,66 +24,12 @@ import model.VendaProduto;
  *
  * @author Carlos Marinho
  */
-//@WebServlet(name = "GerenciarCarrinho", urlPatterns = {"/gerenciarCarrinho.do"})
+//@WebServlet(name = "GerenciarCarrinho", urlPatterns = {"/gerenciarCarrinho"})
 public class GerenciarCarrinho extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet GerenciarCarrinho</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            HttpSession session = request.getSession();
-            try{
-                Venda v = (Venda) session.getAttribute("venda");
-                ArrayList<VendaProduto> carrinho = v.getCarrinho();
-                String acao = request.getParameter("acao");
-                ProdutoDAO pDao = new ProdutoDAO();
-                if(acao.equals("add")){
-                    Produto p = new Produto();
-                    int idProduto = Integer.parseInt(request.getParameter("idProduto"));
-                    p = pDao.getCarregarPorId(idProduto);
-                    int quantidade = Integer.parseInt(request.getParameter("quantidade"));
-                    VendaProduto vp = new VendaProduto();
-                    vp.setProduto(p);
-                    vp.setQuantidade(quantidade);
-                    vp.setValor(p.getPreco());
-                    carrinho.add(vp);
-                    v.setCarrinho(carrinho);
-                    session.setAttribute("venda", v);
-                    response.sendRedirect("formVenda.jsp?acao=c");
-                }else if(acao.equals("del")){
-                    int index = Integer.parseInt(request.getParameter("index"));
-                    carrinho.remove(index);
-                    v.setCarrinho(carrinho);
-                    session.setAttribute("venda", v);
-                    response.sendRedirect("finalizarVenda.jsp");
-                }
-                
-            }catch(Exception e){
-                out.print(e);
-            }
-            
-            
-            
-            out.println("<h1>Servlet GerenciarCarrinho at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    private static final long serialVersionUID = 1L;
+    
+    public GerenciarCarrinho(){
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -97,7 +44,47 @@ public class GerenciarCarrinho extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+        String mensagem = "";
+        
+        try{
+            Venda v =(Venda) session.getAttribute("venda");
+            ArrayList<VendaProduto> carrinho = v.getCarrinho();
+            String acao = request.getParameter("acao");
+            String idProduto = request.getParameter("idProduto");
+            String qtd = request.getParameter("qtd");
+            ProdutoDAO pDao = new ProdutoDAO();
+            if(acao.equals("add")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Produto produto = new Produto();
+                    produto = pDao.getCarregarPorId(Integer.parseInt(idProduto));
+                    VendaProduto vp = new VendaProduto();
+                    vp.setProduto(produto);
+                    vp.setQtd(Integer.parseInt(qtd));
+                    //TODO Multiplicar o preco pela quantidade
+                    vp.setPrecoUnitario(produto.getPreco());
+                    carrinho.add(vp);
+                    v.setCarrinho(carrinho);
+                    session.setAttribute("venda", v);
+                    response.sendRedirect("formVenda.jsp?acao=continuar");
+                }else{
+                    mensagem = "Acesso Negado!";
+                }
+            }
+            
+        }catch (SQLException e){
+            out.print("Erro: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        out.print(
+            "<script type='text/javascript'>" +
+            "alert('" + mensagem + "');" +
+            "location.href='gerenciarMenu?acao=listar';" +
+            "</script>");
+        
     }
 
     /**
@@ -111,7 +98,7 @@ public class GerenciarCarrinho extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+   
     }
 
     /**
@@ -126,9 +113,9 @@ public class GerenciarCarrinho extends HttpServlet {
 
 }
 
-private int isExisting(int id, ArrayList<VendaProduto> carrinho){
+/*private int isExisting(int id, ArrayList<VendaProduto> carrinho){
     for(int i = 0; i < carrinho.size(); i++)
         if(carrinho.get(i).getProduto().getIdProduto == id)
             return i;
         return -1;
-}
+}*/

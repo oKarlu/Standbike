@@ -17,27 +17,6 @@ public class MenuDAO {
     ResultSet rs;
     String sql;
     
-    public ArrayList<Menu> getLista()throws SQLException{
-        ArrayList<Menu> menus = new ArrayList<>();
-        sql= "SELECT * FROM menu";
-        con = ConexaoFactory.conectar();
-        ps = con.prepareStatement(sql);
-        rs = ps.executeQuery();
-        while(rs.next()){
-            Menu m = new Menu();
-            m.setIdMenu(rs.getInt("idMenu"));
-            m.setNome(rs.getString("nome"));
-            m.setLink(rs.getString("link"));
-            m.setIcone(rs.getString("icone"));
-            m.setExibir(rs.getInt("exibir"));
-            menus.add(m);
-            
-        }
-        
-        ConexaoFactory.close(con);
-        return menus;
-    }
-    
     public boolean gravar(Menu m)throws SQLException{
         con = ConexaoFactory.conectar();
         if(m.getIdMenu() == 0){
@@ -63,6 +42,27 @@ public class MenuDAO {
         ConexaoFactory.close(con);
         return true;
         
+    }
+    
+    public ArrayList<Menu> getLista()throws SQLException{
+        ArrayList<Menu> menus = new ArrayList<>();
+        sql= "SELECT * FROM menu";
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        while(rs.next()){
+            Menu m = new Menu();
+            m.setIdMenu(rs.getInt("idMenu"));
+            m.setNome(rs.getString("nome"));
+            m.setLink(rs.getString("link"));
+            m.setIcone(rs.getString("icone"));
+            m.setExibir(rs.getInt("exibir"));
+            menus.add(m);
+            
+        }
+        
+        ConexaoFactory.close(con);
+        return menus;
     }
     
    public Menu getCarregarPorId(int idMenu)throws SQLException{

@@ -17,22 +17,6 @@ public class PerfilDAO {
     ResultSet rs;
     String sql = "";
     
-    public ArrayList<Perfil> getLista()throws SQLException{
-        ArrayList<Perfil> perfis = new ArrayList<>();
-        sql = "SELECT idPerfil, nome" + 
-               " FROM perfil";
-        con = ConexaoFactory.conectar();
-        ps = con.prepareStatement(sql);
-        rs = ps.executeQuery();
-        while(rs.next()){
-            Perfil p = new Perfil();
-            p.setIdPerfil(rs.getInt("idPerfil"));
-            p.setNome(rs.getString("nome"));
-            perfis.add(p);
-       }
-        ConexaoFactory.close(con);
-        return perfis;
-    }
     public boolean gravar(Perfil p)throws SQLException{
         con = ConexaoFactory.conectar();
         
@@ -52,6 +36,23 @@ public class PerfilDAO {
         ConexaoFactory.close(con);
         
         return true;
+    }
+    
+    public ArrayList<Perfil> getLista()throws SQLException{
+        ArrayList<Perfil> perfis = new ArrayList<>();
+        sql = "SELECT idPerfil, nome" + 
+               " FROM perfil";
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        while(rs.next()){
+            Perfil p = new Perfil();
+            p.setIdPerfil(rs.getInt("idPerfil"));
+            p.setNome(rs.getString("nome"));
+            perfis.add(p);
+       }
+        ConexaoFactory.close(con);
+        return perfis;
     }
     
     public Perfil getCarregarPorId(int idPerfil)throws SQLException{

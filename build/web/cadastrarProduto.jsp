@@ -43,17 +43,17 @@
         %>
         <div id="container-fluid">
             
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 <form action="gerenciarProduto" method="POST" 
                       accept-charset="iso-8859-1,utf-8"
                       enctype="multipart/form-data">
-                    <h3 class="text-center mt-5">Cadastro de Produto</h3>
+                    <h3 class="text-center mt-5"><br>Cadastro de Produto</h3>
                     
                     <input type="hidden" id="idproduto" name="idProduto" 
                            value="${produto.idProduto}">
@@ -90,7 +90,7 @@
                             class="col-md-2 form-label btn btn-primary btn-md">Preço</label>
                         <div class="col-md-6">
                             <input type="text" name="preco" id="idpreco" step="any" 
-                                   class="form-control" value="<fmt:formatNumber pattern="#,##0.00" value="${produto.preco}">
+                                   class="form-control" value="<fmt:formatNumber pattern="#,##0.00" value="${produto.preco}"/>">
                             
                         </div>
                     </div>

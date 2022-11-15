@@ -60,7 +60,7 @@
                             v.setCarrinho(new ArrayList<VendaProduto>());
                             session.setAttribute("venda", v);
                         }else{
-                            v = (Venda) session.getAttribute("venda");
+                            v = (Venda)session.getAttribute("venda");
                         }
                     
                         
@@ -78,6 +78,18 @@
                             </h4>
                         </div>
                         <div class="table-responsive">
+                            <div class="d-sm-flex justify-content-sm-end">
+                                <a href="gerenciarCliente?acao=listar"
+                                    class="btn btn-sm btn-danger mr-2"
+                                    roll="button">
+                                    Cancelar&nbsp;<i class="fas fa-stop-circle"></i>
+                                </a>
+                                <a href="formFinalizarVenda.jsp"
+                                    class="btn btn-sm btn-primary mr-2"
+                                    roll="button">
+                                    Finalizar&nbsp;<i class="fas fa-cash-register"></i>
+                                </a>
+                            </div>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -90,8 +102,8 @@
                                         %>
                                        <th>
                                            <div>
-                                               <img class="center" width="140" height="140"
-                                                    src="<%= produto.getCaminho().concat(produto.getNomeArquivo())%>">
+                                               <img class="center" width="180" height="140"
+                                                    src="imagens_produto/<%= produto.getNomeArquivo()%>">
                                            </div>
                                            <div>
                                                <%=produto.getNome() %>
@@ -101,6 +113,7 @@
                                                         value="<%= produto.getPreco()%>" />
                                            </div>
                                            <div>
+                                               <input type="hidden" name="idProduto"/>
                                                <input type="numner" name="qtd" value="1"
                                                       size="4" maxlength="3" max="<%=produto.getEstoque()%>"/><!-- readonly -->
                                            </div>
@@ -123,7 +136,7 @@
                                         
                                 </thead>
                             </table>
-                    
+                                        
                     
                         </div>
                 
