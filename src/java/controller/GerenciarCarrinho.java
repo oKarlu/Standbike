@@ -69,6 +69,17 @@ public class GerenciarCarrinho extends HttpServlet {
                     v.setCarrinho(carrinho);
                     session.setAttribute("venda", v);
                     response.sendRedirect("formVenda.jsp?acao=continuar");
+                    
+                }else{
+                    mensagem = "Acesso Negado!";
+                }
+            }else if(acao.equals("del")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    int index = Integer.parseInt(request.getParameter("index"));
+                    carrinho.remove(index);
+                    v.setCarrinho(carrinho);
+                    session.setAttribute("venda", v);
+                    response.sendRedirect("formFinalizarVenda.jsp");
                 }else{
                     mensagem = "Acesso Negado!";
                 }

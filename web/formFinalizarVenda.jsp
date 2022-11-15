@@ -25,6 +25,13 @@
         <link rel="stylesheet" href="css/menu.css" type="text/css">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <title>Finalizar Venda</title>
+        <script type="text/javascript">
+            function excluir(index, item){
+                if(confirm("Tem certeza que deseja excluir o item " 
+                        + item + "?"))
+                    window.open("gerenciarCarrinho?acao=del&index="+index, "_self");
+            }
+        </script>
     </head>
     <body>
         <%
@@ -43,10 +50,10 @@
             <div id="container-fluid menu">
                 <%@include file="template/menu.jsp" %>
             </div>
-            <div id="conteudo">
+            <div id="conteudo" >
                 <%
                     Venda v = new Venda();
-                    Cliente c = new Cliente();
+                    Produto produto = new Produto();
                     try{
                         v = (Venda) session.getAttribute("venda");
                     }catch(Exception e){
@@ -55,12 +62,16 @@
                     }
                 
                 %>
-                <div class="bg-background">
+                <div>
                     <div class="h-100 justify-content-center align-items-center">
-                        <div class="col-12">
-                        </div>
-                        <form action="gerenciarVenda?acao=alterarQtd" method="post">
-                            <table class="table table-hover table-striped table-bordered table-active">
+                        <form action="gerenciarVenda?acao=alterarQtd" method="POST">
+                            <h3 class="text-center mt-5"><br>Finalizar Venda</h3>
+                            <div class="form-group row offset-sm-3 col-md-6 justify-content-center">
+                                <label for="idCliente" class="col-md-2 form-label btn btn-primary btn-md">Cliente</label>
+                                <input type="text" class="form-control" name="cliente"
+                                       id="idCliente" readonly value="<%=v.getCliente().getNome() %>">
+                            </div>
+                            <table class="table table-hover table-bordered table-active">
                                 <thead class="bg-primary">
                                     <tr class="text-white">
                                         <th>Item</th>
@@ -72,10 +83,89 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    <%
+                                    double total = 0;
+                                    int cont = 0;
+                                    for(VendaProduto vp: v.getCarrinho()){
+                                        
+                                    %>
+                                        <tr>
+                                            <td align="center"><%= cont +1 %></td>
+                                            <td align="center">
+                                                <div class="text-center">
+                                                    <img class="rounded" width="64" height="64"
+                                                        src="imagens_produto/<%= vp.getProduto().getNomeArquivo() %>">
+                                                </div>
+                                                <div class="text-center">
+                                                    <%= vp.getProduto().getNome()%>
+                                                </div>
+                                                </td>
+                                            <td>
+                                                <input type="text" name="qtd" value="<%= vp.getQtd() %>"
+                                                       style="width:50px; height:25px"/>
+                                            </td>
+                                            <td>
+                                                R$&nbsp;<fmt:formatNumber pattern="#,##0.00" 
+                                                        value="<%=vp.getPrecoUnitario() %>" />
+                                            </td>
+                                            <td>
+                                                R$&nbsp;<fmt:formatNumber pattern="#,##0.00"
+                                                value="<%= vp.getQtd() * vp.getPrecoUnitario() %>"/>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm">
+                                                    Alterar Quantidade&nbsp;
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <a href="#" onclick="excluir(<%=cont %>, <%= cont+1 %>)"
+                                                   class="btn btn-danger btn-sm" role="button">
+                                                   Excluir&nbsp;<i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
                                 </tbody>
+                                <%
+                                        if(v.getCarrinho().size() > 0){
+                                            total = total + (vp.getQtd() * vp.getPrecoUnitario());
+                                            cont++;
+                                            v.setValorTotal(total);
+                                        } else{
+                                            total = total - (vp.getQtd() * vp.getPrecoUnitario());
+                                            cont++;
+                                            v.setValorTotal(total);
+                                        }
+                                    
+                                    }
+                                %>
                             </table>
+                            <div class="form-group row offset-sm-4 ">
+                                <label for="valorTotal" class="col-md-2 text-left btn btn-sm btn-secondary">Preço Total</label>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control"
+                                        name="valorTotal" id="valorTotal" readonly
+                                        value="R$&nbsp;<fmt:formatNumber pattern="#,##0.00" value="<%= total %>"/>">
+                                </div>
+                            </div>
+                            <div class="d-sm-flex justify-content-sm-end">
+                                <a href="gerenciarCliente?acao=listar"
+                                   class="btn btn-danger btn-md mr-2"
+                                    role="button">
+                                    Cancelar&nbsp;<i class="fas fa-stop-circle"></i>
+                                </a>
+                                <a href="formVenda.jsp?acao=continuar"
+                                   class="btn btn-success btn-md mr-2"
+                                   role="button">
+                                   Continuar Comprando&nbsp;<i class="fas fa-cart-plus"></i>
+                                </a>
+                                <a href="formVenda.jsp?acao=continuar"
+                                   class="btn btn-primary btn-md mr-2"
+                                   role="button">
+                                   Confirmar Venda&nbsp;<i class="fas fa-money-check"></i>
+                                </a>
+                                
+                            </div>
                         </form>
+                            
                     </div><!-- Div justify-content -->
                 </div><!-- Div bg-background -->
             </div><!-- Div conteúdo -->

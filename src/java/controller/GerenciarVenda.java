@@ -7,6 +7,7 @@ package controller;
 
 import dao.VendaDAO;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,56 +21,11 @@ import model.Venda;
  *
  * @author Carlos Marinho
  */
-@WebServlet(name = "GerenciarVenda", urlPatterns = {"/gerenciarVenda.do"})
+@WebServlet(name = "GerenciarVenda", urlPatterns = {"/gerenciarVenda"})
 public class GerenciarVenda extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet GerenciarVenda</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            
-            HttpSession session = request.getSession();
-            String mensagem = "";
-            try{
-                Venda v = (Venda) session.getAttribute("venda");
-                VendaDAO vDao = new VendaDAO();
-                if(vDao.registrar(v)){
-                    mensagem = "Venda Realizada com sucesso"; 
-                } else{
-                    mensagem = "Erro ao gravar a venda";
-                }
-                
-                
-            }catch(Exception e){
-                out.print(e);
-            }
-            out.println(
-            "<script type='text/javascript'>" +
-            "alert('" + mensagem + "');" +
-            "location.href='gerenciarProduto?acao=listar';" +
-            "</script>" );
-            
-            
-            out.println("<h1>Servlet GerenciarVenda at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    public GerenciarVenda(){
+        super();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,7 +40,31 @@ public class GerenciarVenda extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+        String mensagem = "";
+        try{
+            Venda v = (Venda) session.getAttribute("venda");
+            VendaDAO vDao = new VendaDAO();
+            
+            if(vDao.registrar(v)){
+                mensagem = "Venda realizada com sucesso!";
+            }else{
+                mensagem = "Falha ao registrar a venda!";
+            }
+        }catch(SQLException e){
+             out.print("Erro: " + e.getMessage());
+             e.printStackTrace();
+        }
+        
+        out.print(
+            "<script type='text/javascript'>" +
+            "alert('" + mensagem + "');" +
+            "location.href='listarVenda.jsp';" +
+            "</script>");
+        
     }
 
     /**
@@ -98,7 +78,7 @@ public class GerenciarVenda extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+    
     }
 
     /**

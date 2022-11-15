@@ -57,9 +57,12 @@
                                 <c:forEach items="${produtos}" var="p">
                                     <tr>
                                         <td>${p.idProduto}</td>
-                                        <td><img class="center" width="180" height="140"
+                                        <td align="center">
+                                            <div>
+                                            <img class="center" width="180" height="140"
                                                     src="imagens_produto/${p.nomeArquivo}">
-                                            <br>${p.nome}</td>
+                                            </div>
+                                            ${p.nome}</td>
                                         <td>${p.descricao}</td>
                                         <td>${p.estoque}</td>
                                         <td><fmt:formatNumber  pattern="#,##0.00" value="${p.preco}"/></td>
