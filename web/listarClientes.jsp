@@ -36,8 +36,8 @@
                                 class="btn btn-primary btn-md"
                                 role="button">Cadastrar Cliente&nbsp;
                                 <i class="fa-solid fa-floppy-disk"></i>
-                            
                             </a>
+                            <a href="gerenciarCliente?acao=report" class="btn btn-secondary btn-md">Relatório</a>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered responsive" 

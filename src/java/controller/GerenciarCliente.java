@@ -1,5 +1,10 @@
 package controller;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -33,48 +38,77 @@ public class GerenciarCliente extends HttpServlet {
         
         try {
             if(acao.equals("listar")){
-                ArrayList<Cliente> clientes = new ArrayList<>();
-                clientes = cdao.getLista();
-                for(Cliente cliente: clientes){
-                    System.out.println(cliente);
-                }
-                RequestDispatcher dispatcher =
-                        getServletContext().
-                                getRequestDispatcher("/listarClientes.jsp");
-                request.setAttribute("clientes", clientes);
-                dispatcher.forward(request, response);
-            }else if(acao.equals("alterar")){
-                c = cdao.getCarregarPorId(Integer.parseInt(idCliente));
-                if(c.getIdCliente() > 0 ){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    ArrayList<Cliente> clientes = new ArrayList<>();
+                    clientes = cdao.getLista();
+                    for(Cliente cliente: clientes){
+                        System.out.println(cliente);
+                    }
                     RequestDispatcher dispatcher =
-                        getServletContext().
-                            getRequestDispatcher("/cadastrarCliente.jsp");
-                    request.setAttribute("cliente", c);
+                            getServletContext().
+                                    getRequestDispatcher("/listarClientes.jsp");
+                    request.setAttribute("clientes", clientes);
                     dispatcher.forward(request, response);
-                    
                 }else{
-                    mensagem = "Cliente não encontrado na base dados!";
+                    mensagem = "Acesso Negado!";
+                }
+                
+            }else if(acao.equals("alterar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    c = cdao.getCarregarPorId(Integer.parseInt(idCliente));
+                    if(c.getIdCliente() > 0 ){
+                        RequestDispatcher dispatcher =
+                            getServletContext().
+                                getRequestDispatcher("/cadastrarCliente.jsp");
+                        request.setAttribute("cliente", c);
+                        dispatcher.forward(request, response);
+
+                    }else{
+                        mensagem = "Cliente não encontrado na base dados!";
+                    }
+                }else{
+                    mensagem = "Acesso Negado!";
                 }
                 
             }else if(acao.equals("desativar")){
-                c.setIdCliente(Integer.parseInt(idCliente));
-                if(cdao.desativar(c)){
-                    mensagem = "Cliente desativado com sucesso!";
-                    
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    c.setIdCliente(Integer.parseInt(idCliente));
+                    if(cdao.desativar(c)){
+                        mensagem = "Cliente desativado com sucesso!";
+
+                    }else{
+                        mensagem = "Falha ao desativar o cliente!";
+                    }
                 }else{
-                    mensagem = "Falha ao desativar o cliente!";
+                    mensagem = "Acesso Negado!";
                 }
           
                
             }else if(acao.equals("ativar")){
-                c.setIdCliente(Integer.parseInt(idCliente));
-                if(cdao.ativar(c)){
-                     mensagem = "Cliente ativado com sucesso!";
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    c.setIdCliente(Integer.parseInt(idCliente));
+                    if(cdao.ativar(c)){
+                         mensagem = "Cliente ativado com sucesso!";
+                    }else{
+                        mensagem = "Falha ao ativar o cliente!";
+                    }
                 }else{
-                    mensagem = "Falha ao ativar o cliente!";
+                    mensagem = "Acesso Negado!";
                 }
             
             
+            }else if(acao.equals("report")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    if(gerarRelatorio(request, response)){
+                      mensagem = "Relatório gerado com sucesso!";
+                    } else {
+                      mensagem = "Falha ao gerar relatório!";
+                    }
+                }else{
+                    mensagem = "Acesso Negado!";
+                }
+                
+                
             }else{
                 response.sendRedirect("/index.jsp");
             }
@@ -84,12 +118,57 @@ public class GerenciarCliente extends HttpServlet {
             e.printStackTrace();
         }
         
+     
         out.println(
             "<script type='text/javascript'>" +
             "alert('" + mensagem + "');" +
             "location.href='gerenciarCliente?acao=listar';" +
             "</script>" );
       
+    }
+    
+    protected boolean gerarRelatorio(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException{
+            Document documento = new Document();
+            
+            ClienteDAO cdao = new ClienteDAO();
+            
+            try{
+                //tipo de documento
+                response.setContentType("application/pdf");
+                //nome do documento
+                response.addHeader("Content-Disposition", "inline; filename=clientes.pdf");
+                //Cria o documento
+                PdfWriter.getInstance(documento, response.getOutputStream());
+                //Abrir o documento
+                documento.open();
+                documento.add(new Paragraph("Lista de clientes"));
+                documento.add(new Paragraph(" "));
+                //criar tabela
+                PdfPTable tabela = new PdfPTable(3);
+                PdfPCell col1 = new PdfPCell(new Paragraph("Nome"));
+                PdfPCell col2 = new PdfPCell(new Paragraph("Telefone"));
+                PdfPCell col3 = new PdfPCell(new Paragraph("Email"));
+                tabela.addCell(col1);
+                tabela.addCell(col2);
+                tabela.addCell(col3);
+                //popular a tabela
+                ArrayList<Cliente> lista = new ArrayList<>();
+                lista = cdao.getLista();
+                for(int i = 0; i < lista.size(); i++){
+                    tabela.addCell(lista.get(i).getNome());
+                    tabela.addCell(lista.get(i).getTelefone());
+                    tabela.addCell(lista.get(i).getEmail());
+                }
+                documento.add(tabela);
+                documento.close();
+                return true;
+            }catch(Exception e){
+                System.out.println("Erro: " + e.getMessage());
+                e.printStackTrace();
+                documento.close();
+                return false;
+            }
     }
 
   
