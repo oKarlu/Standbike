@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Cliente;
 import dao.ClienteDAO;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -88,7 +89,7 @@ public class GerenciarCliente extends HttpServlet {
                 if(GerenciarLogin.verificarPermissao(request, response)){
                     c.setIdCliente(Integer.parseInt(idCliente));
                     if(cdao.ativar(c)){
-                         mensagem = "Cliente ativado com sucesso!";
+                        mensagem = "Cliente ativado com sucesso!";
                     }else{
                         mensagem = "Falha ao ativar o cliente!";
                     }
@@ -99,16 +100,10 @@ public class GerenciarCliente extends HttpServlet {
             
             }else if(acao.equals("report")){
                 if(GerenciarLogin.verificarPermissao(request, response)){
-                    if(gerarRelatorio(request, response)){
-                      mensagem = "Relatório gerado com sucesso!";
-                    } else {
-                      mensagem = "Falha ao gerar relatório!";
-                    }
+                    gerarRelatorio(request, response);
                 }else{
                     mensagem = "Acesso Negado!";
                 }
-                
-                
             }else{
                 response.sendRedirect("/index.jsp");
             }
@@ -127,17 +122,18 @@ public class GerenciarCliente extends HttpServlet {
       
     }
     
-    protected boolean gerarRelatorio(HttpServletRequest request, HttpServletResponse response)
+    protected void gerarRelatorio(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
+        
             Document documento = new Document();
-            
             ClienteDAO cdao = new ClienteDAO();
             
             try{
                 //tipo de documento
                 response.setContentType("application/pdf");
                 //nome do documento
-                response.addHeader("Content-Disposition", "inline; filename=clientes.pdf");
+                response.reset();
+                response.addHeader("Content-Disposition", "inline; filename=" + "contatos.pdf");
                 //Cria o documento
                 PdfWriter.getInstance(documento, response.getOutputStream());
                 //Abrir o documento
@@ -162,12 +158,11 @@ public class GerenciarCliente extends HttpServlet {
                 }
                 documento.add(tabela);
                 documento.close();
-                return true;
+
             }catch(Exception e){
                 System.out.println("Erro: " + e.getMessage());
                 e.printStackTrace();
                 documento.close();
-                return false;
             }
     }
 

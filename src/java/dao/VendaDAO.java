@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import model.Venda;
 import model.VendaProduto;
 
@@ -38,12 +39,37 @@ public class VendaDAO {
             psvp.setInt(1, v.getIdVenda());
             psvp.setInt(2, vp.getProduto().getIdProduto());
             psvp.setInt(3, vp.getQtd());
-            psvp.setDouble(4, vp.getPrecoUnitario());
+            psvp.setDouble(4, vp.getProduto().getPreco());
             psvp.execute();
         }
         
         ConexaoFactory.close(con);
         return true;
+    }
+    
+    public ArrayList<Venda> getLista()throws SQLException{
+        con = ConexaoFactory.conectar();
+        sql = "SELECT idVenda, dataVenda, precoTotal, idCliente, idUsuario FROM venda";
+        ps = con.prepareStatement(sql);
+        rs = ps.executeQuery();
+        ArrayList<Venda> vendas = new ArrayList<>();
+        while(rs.next()){
+            Venda v = new Venda();
+            v.setIdVenda(rs.getInt("idVenda"));
+            v.setDataVenda(rs.getDate("dataVenda"));
+            
+            ClienteDAO cDao = new ClienteDAO();
+            v.setCliente(cDao.getCarregarPorId(rs.getInt("idCliente")));
+            
+            UsuarioDAO uDao = new UsuarioDAO();
+            v.setVendedor(uDao.getCarregarPorId(rs.getInt("idUsuario")));
+            
+            v.setValorTotal(rs.getDouble("precoTotal"));
+            
+            vendas.add(v);
+        }
+        ConexaoFactory.close(con);
+        return vendas;
     }
 
     

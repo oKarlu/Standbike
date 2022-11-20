@@ -91,7 +91,7 @@
                                     %>
                                         <tr>
                                             <td align="center"><%= cont +1 %></td>
-                                            <td align="center">
+                                            <td align="rounded">
                                                 <div class="text-center">
                                                     <img class="rounded" width="64" height="64"
                                                         src="imagens_produto/<%= vp.getProduto().getNomeArquivo() %>">
@@ -106,36 +106,40 @@
                                             </td>
                                             <td>
                                                 R$&nbsp;<fmt:formatNumber pattern="#,##0.00" 
-                                                        value="<%=vp.getPrecoUnitario() %>" />
+                                                        value="<%=vp.getProduto().getPreco() %>" />
                                             </td>
                                             <td>
                                                 R$&nbsp;<fmt:formatNumber pattern="#,##0.00"
-                                                value="<%= vp.getQtd() * vp.getPrecoUnitario() %>"/>
+                                                value="<%= vp.getQtd() * vp.getProduto().getPreco() %>"/>
                                             </td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm">
                                                     Alterar Quantidade&nbsp;
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <a href="#" onclick="excluir(<%=cont %>, <%= cont+1 %>)"
-                                                   class="btn btn-danger btn-sm" role="button">
-                                                   Excluir&nbsp;<i class="fas fa-trash-alt"></i>
-                                                </a>
+                                                <a href="#" 
+                                                    onclick="excluir(<%= vp.getProduto().getIdProduto()  %>)" 
+                                                    class="btn btn-danger btn-sm"
+                                                    role="button">
+                                                    Excluir&nbsp;
+                                                    <i class="fas fa-trash-alt"></i>
+                                                 </a>
                                             </td>
                                         </tr>
                                 </tbody>
                                 <%
-                                        if(v.getCarrinho().size() > 0){
-                                            total = total + (vp.getQtd() * vp.getPrecoUnitario());
-                                            cont++;
-                                            v.setValorTotal(total);
-                                        } else{
-                                            total = total - (vp.getQtd() * vp.getPrecoUnitario());
-                                            cont++;
-                                            v.setValorTotal(total);
-                                        }
-                                    
+                                    if(v.getCarrinho().size() > 0){
+                    			total = total + (vp.getQtd() * vp.getProduto().getPreco());
+                                        cont++;
+                           		v.setValorTotal(total);
+                    			
+                                    }else{
+                    			total = total - (vp.getQtd() * vp.getProduto().getPreco());
+                    			cont++;
+                                        v.setValorTotal(total);
                                     }
+                    			
+                                }
                                 %>
                             </table>
                             <div class="form-group row offset-sm-4 ">
@@ -157,7 +161,7 @@
                                    role="button">
                                    Continuar Comprando&nbsp;<i class="fas fa-cart-plus"></i>
                                 </a>
-                                <a href="formVenda.jsp?acao=continuar"
+                                <a href="gerenciarVenda?acao=registrar"
                                    class="btn btn-primary btn-md mr-2"
                                    role="button">
                                    Confirmar Venda&nbsp;<i class="fas fa-money-check"></i>

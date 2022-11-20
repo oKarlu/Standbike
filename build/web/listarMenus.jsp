@@ -99,7 +99,7 @@
                                             </a>
                                                <button class="btn btn-danger btn-sm" 
                                                     onclick="confirmarExclusao(${m.idMenu}, '${m.nome}')">
-                                                Deletar&nbsp;<i class="glyphicon glyphicon-trash"></i>
+                                                Deletar&nbsp;<i class="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>

@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
          pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -17,31 +16,16 @@
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
-        <title>Lista de Menus</title>
+        <title>Listar Vendas</title>
         <script type="text/javascript">
-            function confirmarExclusao(id,nome){
-                if(confirm('Deseja realmente excluir o menu ' + nome +'?')){
-                    location.href='gerenciarMenu?acao=deletar&idMenu='+id;
+            function confirmarExclusao(id){
+                if(confirm('Deseja realmente excluir a venda ' + id +'?')){
+                    location.href='gerenciarVenda?acao=deletar&idVenda='+id;
                 }
             }
         </script>
     </head>
     <body>
-        <%
-        //Http 1.1
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-        //HTTP 1.0
-        response.setHeader("Pragma", "no-cache");
-        //Proxie
-        response.setHeader("Expires", "0");
-        
-        if(session.getAttribute("ulogado") == null){
-            response.sendRedirect("formLogin.jsp");
-        }
-        
-        
-        
-        %>
         <div id="container-fluid">
             
             <div id="container-fluid header">
@@ -52,53 +36,47 @@
             </div>
             <div id="conteudo" class="bg-background">
                 <div class="h-100 justify-content-center align-items-center">
-                    <br><br><br><h3 class="text-center mt-3">Listagem de Menus</h3>
                     <div class="col-12">
+                        <br><br><br><h3 class="text-center mt-3">Listagem de Vendas</h3>
                         <div class="col-sm-12" style="padding-bottom: 15px">
-                            <a href="cadastrarMenu.jsp"
-                                class="btn btn-primary btn-md"
-                                role="button">Cadastrar Menu&nbsp;
-                                <i class="fa-solid fa-floppy-disk"></i>
+                            <a href="gerenciarVenda?acao=report"
+                                class="btn btn-secondary btn-md"
+                                role="button">Gerar relatório&nbsp;
+                                <i class="fa-solid fa-paper-plane"></i>
                             
                             </a>
                         </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered responsive" 
-                                   id="listarMenus">
+                                   id="listarVenda">
                                 <thead class="bg-primary">
                                     <tr class="text-white">
                                         <th>Código</th>
-                                        <th>Nome</th>
-                                        <th>Link</th>
-                                        <th>Ícone</th>
-                                        <th>Exibir</th>
+                                        <th>Data</th>
+                                        <th>Cliente</th>
+                                        <th>Vendedor</th>
+                                        <th>Total</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
+                                <jsp:useBean class="dao.VendaDAO" id="vDao"/>
                                 <tbody>
-                                <c:forEach var="m" items="${menus}" >
+                                    <c:forEach items="${vDao.lista}" var="v">
                                     <tr>
-                                        <td>${m.idMenu}</td>
-                                        <td>${m.nome}</td>
-                                        <td>${m.link}</td>
-                                        <td>${m.icone}</td>
+                                        <td>${v.idVenda}</td>
+                                        <td><fmt:formatDate pattern="dd/MM/YYYY" value="${v.dataVenda}"/></td>
+                                        <td>${v.cliente.nome}</td>
+                                        <td>${v.vendedor.nome}</td>
+                                        <td>R$&nbsp${v.valorTotal}</td>
                                         <td>
-                                            <c:choose>
-                                                <c:when test="${m.exibir == 1}">
-                                                    Sim
-                                                </c:when>
-                                                <c:otherwise>
-                                                    Não
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>
-                                            <a href="gerenciarMenu?acao=alterar&idMenu=${m.idMenu}"
-                                               class="btn btn-primary btn-sm" role="button">
-                                                Alterar&nbsp;<i class="fa-solid fa-pen-to-square"></i>
+                                            <a href="gerenciarVenda?acao=alterar&idVenda=${v.idVenda}"
+                                               class="btn btn-primary btn-sm" 
+                                               role="button">
+                                               Detalhes&nbsp;
+                                               <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                               <button class="btn btn-danger btn-sm" 
-                                                    onclick="confirmarExclusao(${m.idMenu}, '${m.nome}')">
+                                                <button class="btn btn-danger btn-sm" 
+                                                    onclick="confirmarExclusao(${v.idVenda})">
                                                 Deletar&nbsp;<i class="fa-solid fa-trash"></i>
                                             </button>
                                         </td>
@@ -132,7 +110,7 @@
        
         <script type="text/javascript">
              $(document).ready(function () {
-                $("#listarMenus").dataTable({
+                $("#listarVendas").dataTable({
                     "bJQueryUI": true,
                     "lengthMenu": [[5, 10, 20, 25, -1], [5, 10, 20, 25, "Todos"]],
                         "oLanguage": {

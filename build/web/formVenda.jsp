@@ -49,25 +49,31 @@
                    Cliente c = new Cliente();
                    ulogado = GerenciarLogin.verificarAcesso(request, response);
                    request.setAttribute("ulogado", ulogado);
+                   
                    try{
-                        String acao = request.getParameter("acao");
-                        ClienteDAO cDao = new ClienteDAO();
-                        if(acao.equals("novo")){
+			String acao = request.getParameter("acao");
+			ClienteDAO cdao = new ClienteDAO();
+			ArrayList<VendaProduto> carrinho = new ArrayList<VendaProduto>();
+				
+			if(acao.equals("novo")){
                             int idCliente = Integer.parseInt(request.getParameter("idCliente"));
-                            c = cDao.getCarregarPorId(idCliente);
+                            c = cdao.getCarregarPorId(idCliente);
                             v.setCliente(c);
                             v.setVendedor(ulogado);
-                            v.setCarrinho(new ArrayList<VendaProduto>());
-                            session.setAttribute("venda", v);
-                        }else{
-                            v = (Venda)session.getAttribute("venda");
-                        }
-                    
-                        
-                    }catch(SQLException e){
-                        out.print("Erro: " + e.getMessage());
-                        e.printStackTrace();
-                   }
+                            v.setCarrinho(carrinho);
+                            session.setAttribute("carrinho",carrinho);
+                            session.setAttribute("venda", v);	
+                            
+                            }else{
+				v = (Venda) session.getAttribute("venda");
+				carrinho =(ArrayList<VendaProduto>) session.getAttribute("carrinho");
+                            }
+				
+				
+			}catch(SQLException e){
+                            out.print("Erro: " + e.getMessage());
+                            e.printStackTrace();
+			}
 
                 %>
                 <div class="h-100 justify-content-center align-items-center">
@@ -113,16 +119,16 @@
                                                         value="<%= produto.getPreco()%>" />
                                            </div>
                                            <div>
-                                               <input type="hidden" name="idProduto"/>
-                                               <input type="numner" name="qtd" value="1"
-                                                      size="4" maxlength="3" max="<%=produto.getEstoque()%>" readonly/><!-- readonly  -->
+						<input type="text" name="qtd" value="1" 
+						size="4" maxlength="3" readonly/>
+									
                                            </div>
                                            <div>
-                                               <a href="gerenciarCarrinho?acao=add&idProduto=<%=produto.getIdProduto()%>&qtd=1"
-                                                  class="btn btn-primary btn-sm" role="button">
-                                                   Adicionar&nbsp;<i class="fas fa-cart-plus"></i>
-                                               </a>
-                                           </div>
+						<a href="gerenciarCarrinho?acao=add&idProduto=<%=produto.getIdProduto()%>&idCliente=<%=v.getCliente().getIdCliente() %>"
+                                                    class="btn btn-primary btn-sm" role="button">
+                                                    Adicionar&nbsp;<i class="fas fa-cart-plus"></i>
+						</a>
+                                            </div>
                                         <% salto++;
                                             if(salto == 3){
                                         %>
@@ -135,8 +141,7 @@
                                         %>
                                         
                                 </thead>
-                            </table>
-                                        
+                            </table>      
                     
                         </div>
                 

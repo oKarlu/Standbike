@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
-        <title>Projeto ETB</title>
+        <title>Listar Usuarios</title>
     </head>
     <body>
         <div id="container-fluid">

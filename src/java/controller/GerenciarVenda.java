@@ -9,6 +9,8 @@ import dao.VendaDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,14 +47,28 @@ public class GerenciarVenda extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         String mensagem = "";
+        String acao = request.getParameter("acao");
         try{
             Venda v = (Venda) session.getAttribute("venda");
             VendaDAO vDao = new VendaDAO();
             
-            if(vDao.registrar(v)){
-                mensagem = "Venda realizada com sucesso!";
-            }else{
-                mensagem = "Falha ao registrar a venda!";
+            if(acao.equals("registrar")){
+                if(vDao.registrar(v)){
+                    mensagem = "Venda realizada com sucesso!";
+                }else{
+                    mensagem = "Falha ao registrar a venda!";
+                }
+            } else if (acao.equals("listar")){
+                ArrayList<Venda> vendas = new ArrayList<>();
+                    vendas = vDao.getLista();
+                    for(Venda venda: vendas){
+                        System.out.println(venda);
+                    }
+                    RequestDispatcher dispatcher =
+                            getServletContext().
+                                    getRequestDispatcher("/listarVendas.jsp");
+                    request.setAttribute("vendas", vendas);
+                    dispatcher.forward(request, response);
             }
         }catch(SQLException e){
              out.print("Erro: " + e.getMessage());
@@ -62,7 +78,7 @@ public class GerenciarVenda extends HttpServlet {
         out.print(
             "<script type='text/javascript'>" +
             "alert('" + mensagem + "');" +
-            "location.href='listarVenda.jsp';" +
+            "location.href='listarVendas.jsp';" +
             "</script>");
         
     }

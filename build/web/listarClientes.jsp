@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
-        <title>Projeto ETB</title>
+        <title>Listar Clientes</title>
     </head>
     <body>
         <div id="container-fluid">
@@ -45,7 +45,6 @@
                                 <thead class="bg-primary">
                                     <tr class="text-white">
                                         <th>Nome</th>
-                                        <th>Cpf</th>
                                         <th>Endereco</th>
                                         <th>Email</th>
                                         <th>Telefone</th>
@@ -58,7 +57,6 @@
                                 <c:forEach items="${clientes}" var="c">
                                     <tr>
                                         <td>${c.nome}</td>
-                                        <td>${c.cpf}</td>
                                         <td>${c.endereco}</td>
                                         <td>${c.email}</td>
                                         <td>${c.telefone}</td>
