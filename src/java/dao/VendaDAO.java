@@ -82,8 +82,8 @@ public class VendaDAO {
         Venda v = new Venda();
         Cliente c = new Cliente();
         Usuario u = new Usuario();
-        sql = "SELECT venda_produto.idVenda, venda.dataVenda, venda.precoTotal, venda.idCliente, cliente.nome,"
-            + " usuario.idUsuario, usuario.nome FROM venda_produto Join produto inner join venda"
+        sql = "SELECT venda_produto.idVenda, venda.dataVenda, venda.precoTotal, venda.idCliente, cliente.nome, cliente.cpf,"
+            + " cliente.telefone, usuario.idUsuario, usuario.nome FROM venda_produto Join produto inner join venda"
             + " inner join cliente inner join usuario on venda_produto.idProduto = produto.idProduto"
             + " and venda.idVenda = venda_produto.idVenda and cliente.idCliente = venda.idCliente"
             + " and usuario.idUsuario = venda.idUsuario and venda.idVenda = ?";
@@ -103,6 +103,8 @@ public class VendaDAO {
 
             c.setIdCliente(rs.getInt("idCliente"));
             c.setNome(rs.getString("cliente.nome"));
+            c.setCpf(rs.getString("cpf"));
+            c.setTelefone(rs.getString("telefone"));
             recibo.setCliente(c);
             
             u.setIdUsuario(rs.getInt("usuario.idUsuario"));

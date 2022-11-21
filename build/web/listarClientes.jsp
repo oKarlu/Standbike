@@ -48,7 +48,6 @@
                                         <th>Endereco</th>
                                         <th>Email</th>
                                         <th>Telefone</th>
-                                        <th>Data de Cadastro</th>
                                         <th>Status</th>
                                         <th>Ação</th>
                                     </tr>
@@ -60,9 +59,6 @@
                                         <td>${c.endereco}</td>
                                         <td>${c.email}</td>
                                         <td>${c.telefone}</td>
-                                        <td>
-                                            <fmt:formatDate pattern = "dd/MM/yyyy" value = "${c.dataCadastro}" />
-                                        </td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${c.status == 1}">

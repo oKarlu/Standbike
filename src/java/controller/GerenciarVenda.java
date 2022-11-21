@@ -14,6 +14,7 @@ import dao.VendaDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.MaskFormatter;
 import model.Produto;
 import model.ProdutoRecibo;
 import model.Recibo;
@@ -103,7 +105,7 @@ public class GerenciarVenda extends HttpServlet {
             VendaDAO vdao = new VendaDAO();
             
             String patternDate = "dd/MM/yyyy";
-            SimpleDateFormat sdf = new SimpleDateFormat(patternDate);
+            SimpleDateFormat sdf = new SimpleDateFormat(patternDate); 
             
             try{
                 //tipo de documento
@@ -124,9 +126,12 @@ public class GerenciarVenda extends HttpServlet {
                 documento.add(new Paragraph(" "));
                 documento.add(new Paragraph("Data da Venda: " + sdf.format(recibo.getVenda().getDataVenda())));
                 documento.add(new Paragraph(" "));
-                documento.add(new Paragraph("Nome do Cliente: " + recibo.getCliente().getNome()));
-                documento.add(new Paragraph(" "));
                 documento.add(new Paragraph("Nome do Vendedor: " + recibo.getVendedor().getNome()));
+                documento.add(new Paragraph(" "));
+                documento.add(new Paragraph("Nome do Cliente: " + recibo.getCliente().getNome()));
+                documento.add(new Paragraph("Telefone: " + formatarString(recibo.getCliente().getTelefone(), "(##)#####-####")));
+                documento.add(new Paragraph("CPF: " + formatarString(recibo.getCliente().getCpf(), "###.###.###-##")));
+                
   
                 documento.add(new Paragraph(" "));
                 //criar tabela
@@ -151,7 +156,7 @@ public class GerenciarVenda extends HttpServlet {
                 }
                 
                 documento.add(tabela);
-                documento.add(new Paragraph("Total: " + recibo.getVenda().getValorTotal()));
+                documento.add(new Paragraph("Total: R$" + recibo.getVenda().getValorTotal()));
                 documento.close();
 
             }catch(Exception e){
@@ -160,6 +165,14 @@ public class GerenciarVenda extends HttpServlet {
                 documento.close();
             }
     }
+     
+    public static String formatarString(String texto, String mascara) throws ParseException {
+        MaskFormatter mf = new MaskFormatter(mascara);
+        mf.setValueContainsLiteralCharacters(false);
+        return mf.valueToString(texto);
+    }
+     
+     
 
     /**
      * Handles the HTTP <code>POST</code> method.
