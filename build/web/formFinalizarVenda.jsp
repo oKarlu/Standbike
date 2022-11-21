@@ -31,6 +31,15 @@
                         + item + "?"))
                     window.open("gerenciarCarrinho?acao=del&index="+index, "_self");
             }
+            
+            function alterarQuantidade(index, item){
+                if(confirm("Tem certeza que deseja alterar a quantidade em "+qtd+" do item " 
+                        + item + "?"))
+                    window.open("gerenciarCarrinho?acao=alterar&index="+index+"?quantidade="+pegarQuantidade());
+            }
+            
+            
+            
         </script>
     </head>
     <body>
@@ -64,7 +73,8 @@
                 %>
                 <div>
                     <div class="h-100 justify-content-center align-items-center">
-                        <form action="gerenciarVenda?acao=alterarQtd" method="POST">
+                        <!-- action="gerenciarVenda?acao=alterarQtd" -->
+                        <form  method="POST">
                             <h3 class="text-center mt-5"><br>Finalizar Venda</h3>
                             <div class="form-group row offset-sm-3 col-md-6 justify-content-center">
                                 <label for="idCliente" class="col-md-2 form-label btn btn-primary btn-md">Cliente</label>
@@ -101,8 +111,8 @@
                                                 </div>
                                                 </td>
                                             <td>
-                                                <input type="text" name="qtd" value="<%= vp.getQtd() %>"
-                                                       style="width:50px; height:25px"/>
+                                                <input type="text" name="qtd" id="qtd" placeholder="<%= vp.getQtd() %>"
+                                                       style="width:50px; height:25px" readonly/>
                                             </td>
                                             <td>
                                                 R$&nbsp;<fmt:formatNumber pattern="#,##0.00" 
@@ -113,12 +123,15 @@
                                                 value="<%= vp.getQtd() * vp.getProduto().getPreco() %>"/>
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm">
-                                                    Alterar Quantidade&nbsp;
+                                                <!--<a href="#" 
+                                                    onclick="alterarQuantidade(<%= cont %>, <%= cont+1 %>)"
+                                                    class="btn btn-primary btn-sm"
+                                                    role="button">
+                                                    Alterar quantidade&nbsp;
                                                     <i class="fas fa-edit"></i>
-                                                </button>
+                                                 </a>-->
                                                 <a href="#" 
-                                                    onclick="excluir(<%= vp.getProduto().getIdProduto()  %>)" 
+                                                    onclick="excluir(<%= cont %>, <%= cont+1 %>)" 
                                                     class="btn btn-danger btn-sm"
                                                     role="button">
                                                     Excluir&nbsp;

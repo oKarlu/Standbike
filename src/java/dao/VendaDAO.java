@@ -7,6 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.Cliente;
+import model.Produto;
+import model.ProdutoRecibo;
+import model.Recibo;
+import model.Usuario;
 import model.Venda;
 import model.VendaProduto;
 
@@ -71,7 +76,100 @@ public class VendaDAO {
         ConexaoFactory.close(con);
         return vendas;
     }
-
     
-     
+    public Recibo recibo(int idVenda) throws SQLException{
+        Recibo recibo = new Recibo();
+        Venda v = new Venda();
+        Cliente c = new Cliente();
+        Usuario u = new Usuario();
+        sql = "SELECT venda_produto.idVenda, venda.dataVenda, venda.precoTotal, venda.idCliente, cliente.nome,"
+            + " usuario.idUsuario, usuario.nome FROM venda_produto Join produto inner join venda"
+            + " inner join cliente inner join usuario on venda_produto.idProduto = produto.idProduto"
+            + " and venda.idVenda = venda_produto.idVenda and cliente.idCliente = venda.idCliente"
+            + " and usuario.idUsuario = venda.idUsuario and venda.idVenda = ?";
+        
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, idVenda);
+        rs = ps.executeQuery();
+        
+        if(rs.next()){
+            
+            v.setIdVenda(rs.getInt("idVenda"));
+            v.setDataVenda(rs.getDate("dataVenda"));
+            v.setValorTotal(rs.getDouble("precoTotal"));
+            System.out.println(v);
+            recibo.setVenda(v);
+
+            c.setIdCliente(rs.getInt("idCliente"));
+            c.setNome(rs.getString("cliente.nome"));
+            recibo.setCliente(c);
+            
+            u.setIdUsuario(rs.getInt("usuario.idUsuario"));
+            u.setNome(rs.getString("usuario.nome"));
+            recibo.setVendedor(u);
+            
+            
+            
+        }
+            ConexaoFactory.close(con);
+            return recibo;
+    }
+    
+    public ArrayList<ProdutoRecibo> produtoRecibo(int idVenda) throws SQLException{
+        ArrayList<ProdutoRecibo> produtos = new ArrayList<>();
+        sql = "SELECT venda_produto.idProduto,"
+            + " produto.nome, venda_produto.valor, venda_produto.quantidade FROM venda_produto Join produto inner join venda"
+            + " on venda_produto.idProduto = produto.idProduto"
+            + " and venda.idVenda = venda_produto.idVenda and venda.idVenda = ?";
+        
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, idVenda);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            ProdutoRecibo pr = new ProdutoRecibo();
+            
+            Produto p = new Produto();
+            p.setIdProduto(rs.getInt("idProduto"));
+            p.setNome(rs.getString("produto.nome"));
+            pr.setProduto(p);
+            
+            VendaProduto vp = new VendaProduto();
+            vp.setPrecoUnitario(rs.getDouble("valor"));
+            vp.setQtd(rs.getInt("quantidade"));
+            pr.setVp(vp);
+            
+            produtos.add(pr);
+        }
+        
+        return produtos;
+    }
+
+    public Venda getCarregarPorId(int idVenda) throws SQLException{
+        Venda v = new Venda();
+        sql = "SELECT * FROM venda WHERE idVenda = ?";
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, idVenda);
+        rs = ps.executeQuery();
+        if(rs.next()){
+            v.setIdVenda(rs.getInt("idVenda"));
+            v.setDataVenda(rs.getDate("dataVenda"));
+            v.setValorTotal(rs.getDouble("precoTotal"));
+            
+            Cliente c = new Cliente();
+            c.setIdCliente(rs.getInt("idCliente"));
+            v.setCliente(c);
+            
+            Usuario u = new Usuario();
+            u.setIdUsuario(rs.getInt("idUsuario"));
+            v.setVendedor(u);
+            
+            
+        }
+            ConexaoFactory.close(con);
+            return v;
+    }
+    
 }

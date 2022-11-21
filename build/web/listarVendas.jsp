@@ -17,13 +17,7 @@
         <link rel="stylesheet" href="datatables/css/dataTables.bootstrap4.min.css" type="text/css">
         <link rel="stylesheet" href="datatables/css/jquery.dataTables.min.css" type="text/css">
         <title>Listar Vendas</title>
-        <script type="text/javascript">
-            function confirmarExclusao(id){
-                if(confirm('Deseja realmente excluir a venda ' + id +'?')){
-                    location.href='gerenciarVenda?acao=deletar&idVenda='+id;
-                }
-            }
-        </script>
+        
     </head>
     <body>
         <div id="container-fluid">
@@ -56,7 +50,7 @@
                                         <th>Cliente</th>
                                         <th>Vendedor</th>
                                         <th>Total</th>
-                                        <th>Ação</th>
+                                        <th>Recibo</th>
                                     </tr>
                                 </thead>
                                 <jsp:useBean class="dao.VendaDAO" id="vDao"/>
@@ -69,16 +63,12 @@
                                         <td>${v.vendedor.nome}</td>
                                         <td>R$&nbsp${v.valorTotal}</td>
                                         <td>
-                                            <a href="gerenciarVenda?acao=alterar&idVenda=${v.idVenda}"
+                                            <a href="gerenciarVenda?acao=report&idVenda=${v.idVenda}"
                                                class="btn btn-primary btn-sm" 
                                                role="button">
-                                               Detalhes&nbsp;
-                                               <i class="fa-solid fa-pen-to-square"></i>
+                                               Recibo&nbsp;
+                                               <i class="fa-solid fa-paperclip"></i>
                                             </a>
-                                                <button class="btn btn-danger btn-sm" 
-                                                    onclick="confirmarExclusao(${v.idVenda})">
-                                                Deletar&nbsp;<i class="fa-solid fa-trash"></i>
-                                            </button>
                                         </td>
                                     </tr>
                                 </c:forEach>    

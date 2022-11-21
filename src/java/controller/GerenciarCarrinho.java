@@ -38,6 +38,7 @@ public class GerenciarCarrinho extends HttpServlet {
 		
 		String idProduto = request.getParameter("idProduto");
 		System.out.println("idProduto: " + idProduto);
+
 				
 		HttpSession session = request.getSession();
 		Venda v = (Venda)session.getAttribute("venda");
@@ -46,11 +47,14 @@ public class GerenciarCarrinho extends HttpServlet {
 			
 			ProdutoDAO pdao = new ProdutoDAO();
 			Produto produto = new Produto();
-			produto = pdao.getCarregarPorId(
-					Integer.parseInt(idProduto));
-			ArrayList<VendaProduto> carrinho = 
-					new ArrayList<VendaProduto>();
+                        //ArrayList<VendaProduto> carrinho = 
+			//		new ArrayList<VendaProduto>();
+                        ArrayList<VendaProduto> carrinho = v.getCarrinho();
+
+			
 			if(acao.equals("add")) {
+                            produto = pdao.getCarregarPorId(Integer.parseInt(idProduto));
+                            
 				if(session.getAttribute("carrinho") == null) {
 					carrinho.add(new VendaProduto(pdao.getCarregarPorId(
 							Integer.parseInt(idProduto)), 1));
@@ -79,14 +83,25 @@ public class GerenciarCarrinho extends HttpServlet {
 				v.setCarrinho(carrinho);
 				session.setAttribute("carrinho", carrinho);
 				session.setAttribute("venda", v);
-				response.sendRedirect("formVenda.jsp?acao=c");
+				response.sendRedirect("formVenda.jsp?acao=continuar");
 			} else if (acao.equals("del")){
                             int index = Integer.parseInt(request.getParameter("index"));
+                            System.out.println("Index: " + index);
+                            //ArrayList<VendaProduto> cart = v.getCarrinho();
                             carrinho.remove(index);
                             v.setCarrinho(carrinho);
                             session.setAttribute("venda", v);
                             response.sendRedirect("formFinalizarVenda.jsp");
-                        } 
+                        } else if (acao.equals("alterarQtd")){
+                            int index = Integer.parseInt(request.getParameter("index"));
+                            System.out.println("Index : " + index);
+                            int quantidade = Integer.parseInt(request.getParameter("quantidade"));
+                            VendaProduto item = carrinho.get(index);
+                            item.setQtd(quantidade);
+                            v.setCarrinho(carrinho);
+                            session.setAttribute("venda", v);
+                            response.sendRedirect("formFinalizarVenda.jsp");
+                        }
                 					
 		} catch (SQLException e) {
 			out.print("Erro: " + e.getMessage());
