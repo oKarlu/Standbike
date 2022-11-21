@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2022 at 12:54 AM
+-- Generation Time: Nov 21, 2022 at 08:16 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `bdstandbike`
 --
+CREATE DATABASE IF NOT EXISTS `bdstandbike` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `bdstandbike`;
 
 -- --------------------------------------------------------
 
@@ -43,7 +45,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`idCliente`, `nome`, `cpf`, `email`, `endereco`, `telefone`, `dataCadastro`, `status`) VALUES
-(1, 'Julia', '11111111111', 'julia@gmail.com', 'Samambaia', '999999999', '2022-11-15', 1);
+(1, 'Julia', '11111111111', 'julia@gmail.com', 'Samambaia', '61999999999', '2022-11-15', 1),
+(2, 'Danilo Cunha Ribeiro', '99988877755', 'danilo@gmail.com', 'Rua Queimados-RJ', '61999887744', '2022-11-20', 1),
+(3, 'Felipe Almeida Silva', '44455566611', 'felipe@gmail.com', 'Rua Margem da Estrada de Ferro, 255', '61955885544', '2022-11-10', 1),
+(4, 'Emily Sousa Dias', '33322211155', 'emily@hotmail.com', 'Rua José Ignácio, 964', '61988447711', '2022-11-19', 1);
 
 -- --------------------------------------------------------
 
@@ -99,7 +104,10 @@ INSERT INTO `menu` (`idMenu`, `nome`, `link`, `icone`, `exibir`) VALUES
 (35, 'Form venda', 'formVenda.jsp', '', 0),
 (36, 'Form Continuar Venda', 'formVenda.jsp?acao=continuar', '', 0),
 (37, 'Gerenciar Carrinho Add', 'gerenciarCarrinho?acao=add', '', 0),
-(38, 'Formulário finalizar venda', 'formFinalizarVenda.jsp', '', 0);
+(38, 'Formulário finalizar venda', 'formFinalizarVenda.jsp', '', 0),
+(39, 'Gerar Relatório Cliente', 'gerenciarCliente?acao=report', '', 0),
+(40, 'Pagina Vendas', 'listarVendas.jsp', '', 0),
+(41, 'Vendas', 'gerenciarVenda?acao=listar', '', 1);
 
 -- --------------------------------------------------------
 
@@ -152,7 +160,10 @@ INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 (35, 1),
 (36, 1),
 (37, 1),
-(38, 1);
+(38, 1),
+(39, 1),
+(40, 1),
+(41, 1);
 
 -- --------------------------------------------------------
 
@@ -195,7 +206,10 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`idProduto`, `nome`, `descricao`, `estoque`, `preco`, `nomeArquivo`, `caminho`, `status`) VALUES
-(1, 'VELOX - Caloi', 'Caloi Velox V Brake Aro 29', 5, 1549.99, 'bicicleta_1.png', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bicicleta_1.png', 1);
+(1, 'VELOX - Caloi', 'Caloi Velox V Brake Aro 29', 5, 1549.99, 'bicicleta_1.png', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bicicleta_1.png', 1),
+(2, 'Banco Selim MTB', 'Selim MTB Vazado  Shunfeng', 10, 29.9, 'selim-mtb-vazado-shunfeng.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\selim-mtb-vazado-shunfeng.jpg', 1),
+(3, 'Quadro KSW 29', 'Quadro 29 MTB Feminino Mwza - KSW', 3, 475, 'quadro-29-mtb-feminino-mwza-ksw.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\quadro-29-mtb-feminino-mwza-ksw.jpg', 1),
+(4, 'Bomba Ar - Elleven', 'Bomba Ar tripé, Grande - Elleven', 6, 119, 'bomba-ar-oficina-grande-elleven.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bomba-ar-oficina-grande-elleven.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -228,10 +242,20 @@ INSERT INTO `usuario` (`idUsuario`, `nome`, `login`, `senha`, `status`, `idPerfi
 CREATE TABLE `venda` (
   `idVenda` int(11) NOT NULL,
   `dataVenda` date NOT NULL,
-  `precoTotal` varchar(45) NOT NULL,
+  `precoTotal` decimal(8,2) NOT NULL,
   `idCliente` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `venda`
+--
+
+INSERT INTO `venda` (`idVenda`, `dataVenda`, `precoTotal`, `idCliente`, `idUsuario`) VALUES
+(1, '2022-11-20', '534.80', 2, 1),
+(2, '2022-11-20', '119.00', 3, 1),
+(3, '2022-11-20', '1549.99', 4, 1),
+(4, '2022-11-21', '2292.89', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -243,8 +267,22 @@ CREATE TABLE `venda_produto` (
   `idVenda` int(11) NOT NULL,
   `idProduto` int(11) NOT NULL,
   `quantidade` int(11) NOT NULL,
-  `valor` double NOT NULL
+  `valor` decimal(8,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `venda_produto`
+--
+
+INSERT INTO `venda_produto` (`idVenda`, `idProduto`, `quantidade`, `valor`) VALUES
+(1, 2, 2, '29.90'),
+(1, 3, 1, '475.00'),
+(2, 4, 1, '119.00'),
+(3, 1, 1, '1549.99'),
+(4, 1, 1, '1549.99'),
+(4, 2, 1, '29.90'),
+(4, 3, 1, '475.00'),
+(4, 4, 2, '119.00');
 
 --
 -- Indexes for dumped tables
@@ -313,19 +351,19 @@ ALTER TABLE `venda_produto`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `menu_perfil`
 --
 ALTER TABLE `menu_perfil`
-  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `perfil`
@@ -337,7 +375,7 @@ ALTER TABLE `perfil`
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idProduto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `usuario`
@@ -349,7 +387,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `venda`
 --
 ALTER TABLE `venda`
-  MODIFY `idVenda` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idVenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
