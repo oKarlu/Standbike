@@ -30,16 +30,16 @@
       
         <div id="container-fluid">
             
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 <form action="gerenciarUsuario" method="POST" 
                       accept-charset="iso-8859-1,utf-8">
-                    <h3 class="text-center mt-5">Cadastro de Usuário</h3>
+                    <h3 class="text-center mt-5"><br>Cadastro de Usuário</h3>
                     
                     <input type="hidden" id="idusuario" name="idUsuario" 
                            value="${usuario.idUsuario}">
