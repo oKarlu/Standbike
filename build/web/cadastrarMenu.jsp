@@ -75,15 +75,6 @@
                             
                         </div>
                     </div>
-                        <div class="form-group row offset-md-3 mt-4">
-                        <label for="idicone" class="col-md-1 form-label btn btn-primary btn-md">icone</label>
-                        <div class="col-md-6">
-                            <input type="text" name="icone" id="idicone" 
-                                   class="form-control" value="${menu.icone}">
-                            
-                        </div>
-                    </div>
-                    
                     <div class="form-group row offset-md-3 mt-3">
                         <label for="idexibir" 
                                class="col-md-1 form-label mt-2 btn btn-primary btn-md">Exibir</label>
@@ -111,9 +102,43 @@
                              </c:choose>
                             </select>
                         </div>
-                        
-                        
                     </div>
+                    <div class="form-group row offset-md-3 mt-3">
+                        <label for="idstatus" class="col-md-1 form-label btn btn-primary btn-md mt-2">Status</label>
+                        <div class="col-md-6">
+                            <select id="idstatus" name="status"
+                                class="form-control-sm mt-2">
+                                <option value="" selected>
+                                    Escolha uma opção
+                                </option>
+                                <c:choose>
+                                    <c:when test="${menu.status == 1}">
+                                        <option value="${menu.status}" selected>
+                                            Ativado
+                                        </option>
+                                        <option value="0">
+                                            Desativado
+                                        </option>
+                                        
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="1">
+                                            Ativado
+                                        </option>
+                                        <option value="${menu.status == 0}" selected>
+                                            Desativado
+                                        </option>
+                                        
+                                    </c:otherwise>
+                                
+                                </c:choose>
+                                
+                                
+                            </select>
+                            
+                        </div>
+                    </div>               
+                                   
                     <div class="d-md-flex justify-content-md-end mr-3">
                         <button  class="btn btn-primary btn-md mr-2">
                             Gravar&nbsp;

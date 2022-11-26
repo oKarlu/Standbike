@@ -21,16 +21,18 @@ public class PerfilDAO {
         con = ConexaoFactory.conectar();
         
         if(p.getIdPerfil() == 0){
-            sql = "INSERT INTO perfil(nome) " +
-                  "VALUES (?)";
+            sql = "INSERT INTO perfil(nome, status) " +
+                  "VALUES (?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, p.getNome());
+            ps.setInt(2, p.getStatus());
             
         }else{
-            sql = "UPDATE perfil SET nome = ? WHERE idPerfil = ?";
+            sql = "UPDATE perfil SET nome = ? status = ? WHERE idPerfil = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, p.getNome());
-            ps.setInt(2, p.getIdPerfil());
+            ps.setInt(2, p.getStatus());
+            ps.setInt(3, p.getIdPerfil());
         }
         ps.executeUpdate();
         ConexaoFactory.close(con);
@@ -40,7 +42,7 @@ public class PerfilDAO {
     
     public ArrayList<Perfil> getLista()throws SQLException{
         ArrayList<Perfil> perfis = new ArrayList<>();
-        sql = "SELECT idPerfil, nome" + 
+        sql = "SELECT *" + 
                " FROM perfil";
         con = ConexaoFactory.conectar();
         ps = con.prepareStatement(sql);
@@ -49,6 +51,7 @@ public class PerfilDAO {
             Perfil p = new Perfil();
             p.setIdPerfil(rs.getInt("idPerfil"));
             p.setNome(rs.getString("nome"));
+            p.setStatus(rs.getInt("status"));
             perfis.add(p);
        }
         ConexaoFactory.close(con);
@@ -66,6 +69,7 @@ public class PerfilDAO {
         if(rs.next()){
            p.setIdPerfil(rs.getInt("idPerfil"));
            p.setNome(rs.getString("nome"));
+           p.setStatus(rs.getInt("status"));
            p.setMenus(menusVinculadosPorPerfil(idPerfil));
            p.setNaoMenus(menusNaoVinculadosPorPerfil(idPerfil));
         }
@@ -100,7 +104,6 @@ public class PerfilDAO {
             m.setIdMenu(rs.getInt("m.idMenu"));
             m.setNome(rs.getString("m.nome"));
             m.setLink(rs.getString("m.link"));
-            m.setIcone(rs.getString("m.icone"));
             m.setExibir(rs.getInt("m.exibir"));
             lista.add(m);
         }
@@ -122,7 +125,6 @@ public class PerfilDAO {
             m.setIdMenu(rs.getInt("m.idMenu"));
             m.setNome(rs.getString("m.nome"));
             m.setLink(rs.getString("m.link"));
-            m.setIcone(rs.getString("m.icone"));
             m.setExibir(rs.getInt("m.exibir"));
             lista.add(m);
         }

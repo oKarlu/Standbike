@@ -18,12 +18,9 @@
         <link rel="stylesheet" href="fonts/css/all.css" type="text/css">
         <link rel="stylesheet" href="css/menu.css" type="text/css">
         <link rel="stylesheet" href="css/styles.css" type="text/css">
-        <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
         <title>Home</title>
     </head>
-    <body id="fundo">
+    <body>
             <div id="container-fluid header">
                 <%@include file="template/banner.jsp" %>
             </div>
@@ -32,21 +29,21 @@
             </div>
             <div class="card" id="telaindex">
                 <div class="form-group">
-                    <br><br><h1>Missão</h1>
+                    <br><br><br><h1 class="text-center mt-3">Missão</h1>
                     <br>
                     <h5>
                       Incentivar o uso da bicicleta como um meio de transporte saudável que não polui, contribuindo para a sustentabilidade. 
                       Prestar serviços de alta qualidade com agilidade e confiança, atendendo a todos os tipos de clientes com competência, ética e dedicação, buscando sempre a satisfação.
                     </h5>
                     <br>
-                    <h1>Visão</h1>
+                    <h1 class="text-center mt-3">Visão</h1>
                     <br>
                     <h5>
                       Ser uma das líderes no segmento de bicicletas, visando sempre honestidade, integridade, qualidade e eficiência; além de fixar nossa marca na mente dos consumidores 
                       como símbolo de seriedade e confiança dentro do determinado ramo.
                     </h5>
                     <br>
-                    <h1>Valores</h1>
+                    <h1 class="text-center mt-3">Valores</h1>
                     <br>
                     <h5>
                       1- Superar as expectativas de nossos clientes;<br>

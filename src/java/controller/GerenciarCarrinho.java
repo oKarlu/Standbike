@@ -17,7 +17,7 @@ import dao.ProdutoDAO;
 import model.Venda;
 import model.VendaProduto;
 
-
+//@WebServlet(name = "GerenciarCarrinho", urlPatterns = {"/gerenciarCarrinho"})
 public class GerenciarCarrinho extends HttpServlet {
 	private static final long serialVersionUID = 1L;
   

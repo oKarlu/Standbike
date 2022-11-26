@@ -70,8 +70,8 @@
                                         <th>Código</th>
                                         <th>Nome</th>
                                         <th>Link</th>
-                                        <th>Ícone</th>
                                         <th>Exibir</th>
+                                        <th>Status</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
@@ -81,7 +81,6 @@
                                         <td>${m.idMenu}</td>
                                         <td>${m.nome}</td>
                                         <td>${m.link}</td>
-                                        <td>${m.icone}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${m.exibir == 1}">
@@ -93,10 +92,54 @@
                                             </c:choose>
                                         </td>
                                         <td>
+                                            <c:choose>
+                                                <c:when test="${m.status == 1}">
+                                                    ativado
+                                                </c:when>
+                                                <c:otherwise>
+                                                    desativado
+                                                </c:otherwise>
+                                            </c:choose>
+                                            
+                                        </td>
+                                        <td>
+                                            <script type="text/javascript">
+                                                function confirmDesativar(id, nome){
+                                                    if(confirm('Deseja desativar o menu ' +
+                                                       nome + '?')){
+                                                       location.href="gerenciarMenu?acao=desativar&idMenu="+id;
+                                                    }
+                                                }
+                                                
+                                                function confirmAtivar(id, nome){
+                                                    if(confirm('Deseja ativar o menu ' +
+                                                       nome + '?')){
+                                                       location.href="gerenciarMenu?acao=ativar&idMenu="+id;
+                                                    }
+                                                }
+                                            </script>
                                             <a href="gerenciarMenu?acao=alterar&idMenu=${m.idMenu}"
                                                class="btn btn-primary btn-sm" role="button">
                                                 Alterar&nbsp;<i class="fa-solid fa-pen-to-square"></i>
                                             </a>
+                                            <c:choose>
+                                                <c:when test="${m.status == 1}">
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="confirmDesativar('${m.idMenu}','${m.nome}')">
+                                                        Desativar&nbsp;
+                                                        <i class="fas fa-user fa-user-lock"></i>
+                                                    </button>
+                                                    
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button class="btn btn-success btn-sm"
+                                                        onclick="confirmAtivar('${m.idMenu}', '${m.nome}')">
+                                                        Ativar&nbsp;
+                                                        <i class="fa-solid fa-user-shield"></i>
+                                                    </button>
+                                                    
+                                                </c:otherwise>
+                                            </c:choose>
                                                <button class="btn btn-danger btn-sm" 
                                                     onclick="confirmarExclusao(${m.idMenu}, '${m.nome}')">
                                                 Deletar&nbsp;<i class="fa-solid fa-trash"></i>

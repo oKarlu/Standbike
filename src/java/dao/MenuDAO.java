@@ -20,20 +20,20 @@ public class MenuDAO {
     public boolean gravar(Menu m)throws SQLException{
         con = ConexaoFactory.conectar();
         if(m.getIdMenu() == 0){
-            sql = "INSERT INTO menu (nome, link, icone, exibir) VALUES (?, ?, ?, ?)";
+            sql = "INSERT INTO menu (nome, link, exibir, status) VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, m.getNome());
             ps.setString(2, m.getLink());
-            ps.setString(3, m.getIcone());
-            ps.setInt(4, m.getExibir());
+            ps.setInt(3, m.getExibir());
+            ps.setInt(4, m.getStatus());
             
         }else{
-            sql = "UPDATE menu SET nome = ?, link = ?, icone = ?, exibir = ? WHERE idMenu = ?";
+            sql = "UPDATE menu SET nome = ?, link = ?, exibir = ? status = ? WHERE idMenu = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, m.getNome());
             ps.setString(2, m.getLink());
-            ps.setString(3, m.getIcone());
-            ps.setInt(4, m.getExibir());
+            ps.setInt(3, m.getExibir());
+            ps.setInt(4, m.getStatus());
             ps.setInt(5, m.getIdMenu());
             
             
@@ -55,8 +55,8 @@ public class MenuDAO {
             m.setIdMenu(rs.getInt("idMenu"));
             m.setNome(rs.getString("nome"));
             m.setLink(rs.getString("link"));
-            m.setIcone(rs.getString("icone"));
             m.setExibir(rs.getInt("exibir"));
+            m.setStatus(rs.getInt("status"));
             menus.add(m);
             
         }
@@ -76,8 +76,8 @@ public class MenuDAO {
            m.setIdMenu(rs.getInt("idMenu"));
            m.setNome(rs.getString("nome"));
            m.setLink(rs.getString("link"));
-           m.setIcone(rs.getString("icone"));
            m.setExibir(rs.getInt("exibir"));
+           m.setStatus(rs.getInt("status"));
        }
        
        ConexaoFactory.close(con);

@@ -14,6 +14,7 @@ import lombok.ToString;
 public class Perfil {
     private int idPerfil;
     private String nome;
+    private int status;
     private ArrayList<Menu> menus;
     private ArrayList<Menu> naoMenus;
     

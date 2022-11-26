@@ -80,6 +80,33 @@ public class GerenciarMenu extends HttpServlet {
                     mensagem = "Acesso Negado!";
                 }
                         
+            } else if(acao.equals("desativar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    m.setIdMenu(Integer.parseInt(idMenu));
+                    if(mdao.desativar(m)){
+                        mensagem = "Perfil desativado com sucesso!";
+                    
+                    }else{
+                        mensagem = "Falha ao desativar o perfil!";
+                    }
+                 }else{
+                    mensagem = "Acesso não autorizado!";
+                 }
+                 
+            }else if(acao.equals("ativar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    m.setIdMenu(Integer.parseInt(idMenu));
+                    if(mdao.ativar(m)){
+                        mensagem = "Perfil ativado com sucesso!";
+                    }else{
+                        mensagem = "Falha ao ativar o perfil!";
+                    }
+                }else{
+                     mensagem = "Acesso não autorizado!";
+                }
+               
+            
+            
             }
         } catch (SQLException e) {
             mensagem = "Erro: " + e.getMessage();
@@ -107,46 +134,57 @@ public class GerenciarMenu extends HttpServlet {
         String idMenu = request.getParameter("idMenu");
         String nome = request.getParameter("nome");
         String link = request.getParameter("link");
-        String icone = request.getParameter("icone");
+        String status = request.getParameter("status");
         String exibir = request.getParameter("exibir");
         String mensagem = "";
         
         Menu m = new Menu();
-        if(!idMenu.isEmpty()){
-            m.setIdMenu(Integer.parseInt(idMenu));
-           
-        }
         
-        m.setIcone(icone);
-        
-        if(nome.equals("") || nome.isEmpty()){
-            request.setAttribute("msg", "Informe o valor para o campo menu!");
-            despacharRequisicao(request, response);
-        }else{
-            m.setNome(nome);
-        }
-        
-        if(link.equals("") || link.isEmpty()){
-            request.setAttribute("msg", "Informe o valor para o campo link do menu!");
-            despacharRequisicao(request, response);
-        }else{
-             m.setLink(link);
-        }
-        
-        if(exibir.equals("") || exibir.isEmpty()){
-            request.setAttribute("msg", "Informe o valor para o campo exibir!");
-            despacharRequisicao(request, response);
-           
-        }else{
-            try{
-                m.setExibir(Integer.parseInt(exibir));
-            }catch(NumberFormatException e){
-                mensagem = "Erro: " + e.getMessage();
-                e.printStackTrace();
+        try{
+            if(!idMenu.isEmpty()){
+                m.setIdMenu(Integer.parseInt(idMenu));
+
             }
-            
-           
-         }
+
+
+            if(nome.equals("") || nome.isEmpty()){
+                request.setAttribute("msg", "Informe o valor para o campo menu!");
+                despacharRequisicao(request, response);
+            }else{
+                m.setNome(nome);
+            }
+
+            if(link.equals("") || link.isEmpty()){
+                request.setAttribute("msg", "Informe o valor para o campo link do menu!");
+                despacharRequisicao(request, response);
+            }else{
+                 m.setLink(link);
+            }
+
+            if(exibir.equals("") || exibir.isEmpty()){
+                request.setAttribute("msg", "Informe o valor para o campo exibir!");
+                despacharRequisicao(request, response);
+
+            }else{
+                try{
+                    m.setExibir(Integer.parseInt(exibir));
+                }catch(NumberFormatException e){
+                    mensagem = "Erro: " + e.getMessage();
+                    e.printStackTrace();
+                }
+            }
+
+            if(status.isEmpty() || status.equals("")){
+                request.setAttribute("msg", "Informe o status do Cliente!");
+                despacharRequisicao(request, response);
+                throw new SQLException("Status nulo");
+            }else{
+                m.setStatus(Integer.parseInt(status));
+            }
+        }catch(SQLException e){
+            mensagem = "Erro: " + e.getMessage();
+            e.printStackTrace();
+        }
         
        
         

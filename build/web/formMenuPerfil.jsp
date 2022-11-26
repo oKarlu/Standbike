@@ -93,7 +93,6 @@
                                         <th>Código</th>
                                         <th>Nome</th>
                                         <th>Link</th>
-                                        <th>Ícone</th>
                                         <th>Exibir</th>
                                         <th>Desvincular</th>
                                     </tr>
@@ -106,7 +105,6 @@
                                         <td>${m.idMenu}</td>
                                         <td>${m.nome}</td>
                                         <td>${m.link}</td>
-                                        <td>${m.icone}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${m.exibir == 1}">

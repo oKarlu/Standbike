@@ -49,8 +49,44 @@
                             <input type="text" name="nome" id="idnome" 
                                    class="form-control" value="${perfil.nome}">
                             
-                        </div>
+                        </div>             
                     </div>
+                    <div class="form-group row offset-md-2 mt-4">
+                        <label for="idstatus" class="col-md-2 form-label btn btn-primary btn-md mt-2">Status</label>
+                        <div class="col-md-6">
+                            <select id="idstatus" name="status"
+                                class="form-control-sm mt-2">
+                                <option value="" selected>
+                                    Escolha uma opção
+                                </option>
+                                <c:choose>
+                                    <c:when test="${perfil.status == 1}">
+                                        <option value="${perfil.status}" selected>
+                                            Ativado
+                                        </option>
+                                        <option value="0">
+                                            Desativado
+                                        </option>
+                                        
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="1">
+                                            Ativado
+                                        </option>
+                                        <option value="${perfil.status == 0}" selected>
+                                            Desativado
+                                        </option>
+                                        
+                                    </c:otherwise>
+                                
+                                </c:choose>
+                                
+                                
+                            </select>
+                            
+                        </div>
+                    </div>               
+                                   
                     <div class="d-md-flex justify-content-md-end mr-3">
                         <button  class="btn btn-primary btn-md mr-2">
                             Gravar&nbsp;
@@ -63,9 +99,6 @@
                         </a>
                         
                     </div>
-                    
-                    
-                    
                 </form>
                 
             </div>

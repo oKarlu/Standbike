@@ -47,9 +47,9 @@ body{
     float: left;
 }
 
-.fundo{
+#fundo{
     background-color: rgb(243, 243, 243);
-    background-image: url('../imagens/fundoindex1.jpg');
+    background-image: url("../imagens/fundoindex1.jpg");
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;

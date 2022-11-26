@@ -53,6 +53,7 @@
                                     <tr class="text-white">
                                         <th>Código</th>
                                         <th>Nome</th>
+                                        <th>Status</th>
                                         <th>Ação</th>
                                     </tr>
                                 </thead>
@@ -62,21 +63,65 @@
                                         <td>${p.idPerfil}</td>
                                         <td>${p.nome}</td>
                                         <td>
+                                            <c:choose>
+                                                <c:when test="${p.status == 1}">
+                                                    ativado
+                                                </c:when>
+                                                <c:otherwise>
+                                                    desativado
+                                                </c:otherwise>
+                                            </c:choose>
+                                            
+                                        </td>
+                                        <td>
+                                            <script type="text/javascript">
+                                                function confirmDesativar(id, nome){
+                                                    if(confirm('Deseja desativar o perfil ' +
+                                                       nome + '?')){
+                                                       location.href="gerenciarPerfil?acao=desativar&idPerfil="+id;
+                                                    }
+                                                }
+                                                
+                                                function confirmAtivar(id, nome){
+                                                    if(confirm('Deseja ativar o perfil ' +
+                                                       nome + '?')){
+                                                       location.href="gerenciarPerfil?acao=ativar&idPerfil="+id;
+                                                    }
+                                                }
+                                            </script>
                                             <a href="gerenciarPerfil?acao=alterar&idPerfil=${p.idPerfil}"
                                                class="btn btn-primary btn-sm" role="button">
                                                 Alterar&nbsp;<i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                               <button class="btn btn-danger btn-sm" 
-                                                    onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
-                                                Deletar&nbsp;<i class="fa-solid fa-trash"></i>
-                                            </button>
-                                                
                                                 <a href="gerenciarMenuPerfil.do?acao=gerenciar&idPerfil=${p.idPerfil}"
                                                    class="btn btn-secondary btn-sm" 
                                                    role="button">
                                                    Acessos&nbsp;
                                                    <i class="fas fa-user-tag"></i>
                                                 </a>
+                                                   
+                                            <c:choose>
+                                                <c:when test="${p.status == 1}">
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="confirmDesativar('${p.idPerfil}','${p.nome}')">
+                                                        Desativar&nbsp;
+                                                        <i class="fas fa-user fa-user-lock"></i>
+                                                    </button>
+                                                    
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button class="btn btn-success btn-sm"
+                                                        onclick="confirmAtivar('${p.idPerfil}', '${p.nome}')">
+                                                        Ativar&nbsp;
+                                                        <i class="fa-solid fa-user-shield"></i>
+                                                    </button>
+                                                    
+                                                </c:otherwise>
+                                            </c:choose>
+                                                <button class="btn btn-danger btn-sm" 
+                                                    onclick="confirmarExclusao(${p.idPerfil}, '${p.nome}')">
+                                                Deletar&nbsp;<i class="fa-solid fa-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </c:forEach>    

@@ -78,6 +78,33 @@ public class GerenciarPerfil extends HttpServlet {
                     mensagem = "Acesso Negado!";
                 }     
             
+            }else if(acao.equals("desativar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    p.setIdPerfil(Integer.parseInt(idPerfil));
+                    if(pdao.desativar(p)){
+                        mensagem = "Perfil desativado com sucesso!";
+                    
+                    }else{
+                        mensagem = "Falha ao desativar o perfil!";
+                    }
+                 }else{
+                    mensagem = "Acesso não autorizado!";
+                 }
+                 
+            }else if(acao.equals("ativar")){
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    p.setIdPerfil(Integer.parseInt(idPerfil));
+                    if(pdao.ativar(p)){
+                        mensagem = "Perfil ativado com sucesso!";
+                    }else{
+                        mensagem = "Falha ao ativar o perfil!";
+                    }
+                }else{
+                     mensagem = "Acesso não autorizado!";
+                }
+               
+            
+            
             }else{
                 response.sendRedirect("/index.jsp");
             }
@@ -105,6 +132,7 @@ public class GerenciarPerfil extends HttpServlet {
         PrintWriter out = response.getWriter();
         String idPerfil = request.getParameter("idPerfil");
         String nome = request.getParameter("nome");
+        String status = request.getParameter("status");
         String mensagem = "";
         
         Perfil p = new Perfil();
@@ -121,6 +149,15 @@ public class GerenciarPerfil extends HttpServlet {
                
             }else{
                 p.setNome(nome);
+            }
+            
+            if(status.isEmpty() || status.equals("")){
+                request.setAttribute("msg", "Informe o status do Cliente!");
+                despacharRequisicao(request, response);
+                throw new SQLException("Status nulo");
+                
+            }else{
+                p.setStatus(Integer.parseInt(status));
             }
             
             if(pdao.gravar(p)){
