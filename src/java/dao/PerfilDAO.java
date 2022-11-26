@@ -160,4 +160,29 @@ public class PerfilDAO {
         }
     }
     
+    public boolean ativar(Perfil p) throws SQLException{
+        sql = "UPDATE perfil SET status = 1 "
+            + "WHERE idPerfil = ?";
+        
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, p.getIdPerfil());
+        ps.executeUpdate();
+        ConexaoFactory.close(con);
+        return true;
+    }
+    
+    public boolean desativar(Perfil p) throws SQLException{
+        sql = "UPDATE perfil SET status = 0 "
+            + "WHERE idPerfil = ?";
+        
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, p.getIdPerfil());
+        ps.executeUpdate();
+        
+        ConexaoFactory.close(con);
+        return true;
+    }
+    
 }

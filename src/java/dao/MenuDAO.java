@@ -95,5 +95,30 @@ public class MenuDAO {
        ConexaoFactory.close(con);
        return true;
    }
+   
+   public boolean ativar(Menu m) throws SQLException{
+        sql = "UPDATE menu SET status = 1 "
+            + "WHERE idMenu = ?";
+        
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, m.getIdMenu());
+        ps.executeUpdate();
+        ConexaoFactory.close(con);
+        return true;
+    }
+    
+    public boolean desativar(Menu m) throws SQLException{
+        sql = "UPDATE menu SET status = 0 "
+            + "WHERE idMenu = ?";
+        
+        con = ConexaoFactory.conectar();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, m.getIdMenu());
+        ps.executeUpdate();
+        
+        ConexaoFactory.close(con);
+        return true;
+    }
   
 }

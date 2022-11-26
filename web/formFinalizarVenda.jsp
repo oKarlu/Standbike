@@ -73,8 +73,7 @@
                 %>
                 <div>
                     <div class="h-100 justify-content-center align-items-center">
-                        <!-- action="gerenciarVenda?acao=alterarQtd" -->
-                        <form  method="POST">
+                        <form action="gerenciarVenda?acao=alterarQtd"  method="POST">
                             <h3 class="text-center mt-5"><br>Finalizar Venda</h3>
                             <div class="form-group row offset-sm-3 col-md-6 justify-content-center">
                                 <label for="idCliente" class="col-md-2 form-label btn btn-primary btn-md">Cliente</label>
@@ -111,8 +110,8 @@
                                                 </div>
                                                 </td>
                                             <td>
-                                                <input type="text" name="qtd" id="qtd" placeholder="<%= vp.getQtd() %>"
-                                                       style="width:50px; height:25px" readonly/>
+                                                <input type="text" name="qtd" id="qtd" value="<%= vp.getQtd() %>"
+                                                       style="width:50px; height:25px"/>
                                             </td>
                                             <td>
                                                 R$&nbsp;<fmt:formatNumber pattern="#,##0.00" 
@@ -122,14 +121,11 @@
                                                 R$&nbsp;<fmt:formatNumber pattern="#,##0.00"
                                                 value="<%= vp.getQtd() * vp.getProduto().getPreco() %>"/>
                                             </td>
-                                            <td>
-                                                <!--<a href="#" 
-                                                    onclick="alterarQuantidade(<%= cont %>, <%= cont+1 %>)"
-                                                    class="btn btn-primary btn-sm"
-                                                    role="button">
-                                                    Alterar quantidade&nbsp;
+                                            <!-- onclick="alterarQuantidade(<%= cont %>, <%= cont+1 %>)" -->
+                                            <td align="center">
+                                                <button class="btn btn-primary btn-sm">Alterar Quantidade&nbsp;
                                                     <i class="fas fa-edit"></i>
-                                                 </a>-->
+                                                </button>
                                                 <a href="#" 
                                                     onclick="excluir(<%= cont %>, <%= cont+1 %>)" 
                                                     class="btn btn-danger btn-sm"

@@ -29,6 +29,7 @@ import model.Produto;
 import model.ProdutoRecibo;
 import model.Recibo;
 import model.Venda;
+import model.VendaProduto;
 
 /**
  *
@@ -184,8 +185,33 @@ public class GerenciarVenda extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    
+        throws ServletException, IOException {
+        response.setContentType("text/html; charset=UTF-8");
+	PrintWriter out = response.getWriter();
+	HttpSession session = request.getSession();
+	String acao = request.getParameter("acao");
+	System.out.println("Ac�o: " + acao);
+				
+	if(acao.equals("alterarQtd")) {
+            try {
+		Venda v = (Venda) session.getAttribute("venda");
+		ArrayList<VendaProduto> carrinho = 
+			(ArrayList<VendaProduto>)session.getAttribute("carrinho");
+		String []qtd = request.getParameterValues("qtd");
+		for(int i = 0; i < carrinho.size(); i++) {
+                    carrinho.get(i).setQtd(Integer.parseInt(qtd[i]));
+		}
+		session.setAttribute("carrinho", carrinho);
+				
+		session.setAttribute("venda", v);
+				
+		response.sendRedirect("formFinalizarVenda.jsp");
+				
+		}catch(Exception e) {
+                    out.print("Erro: " + e.getMessage());
+                    e.printStackTrace();
+		}
+    }
     }
 
     /**
