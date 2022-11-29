@@ -28,23 +28,23 @@
         %>
         <div id="container-fluid">
             
-            <div id="header">
-                <jsp:include page="template/banner.jsp"></jsp:include>
+            <div id="container-fluid header">
+                <%@include file="template/banner.jsp" %>
             </div>
-            <div id="menu">
-                <jsp:include page="template/menu.jsp"></jsp:include>
+            <div id="container-fluid menu">
+                <%@include file="template/menu.jsp" %>
             </div>
             <div id="conteudo" class="bg-background">
                 <form action="gerenciarCliente" method="POST" 
                       accept-charset="iso-8859-1,utf-8">
-                    <h3 class="text-center mt-5">Cadastro de Cliente</h3>
+                    <h3 class="text-center mt-5"><br><br>Cadastro de Cliente</h3>
                     
                     <input type="hidden" id="idcliente" name="idCliente" 
                            value="${cliente.idCliente}">
                     
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idnome" 
-                               class="col-md-1 form-label btn btn-primary btn-md">Nome</label>
+                               class="col-md-2 form-label btn btn-primary btn-md">Nome</label>
                         <div class="col-md-6">
                             <input type="text" name="nome" id="idnome" 
                                    class="form-control" value="${cliente.nome}">
@@ -53,14 +53,14 @@
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idnome" 
-                               class="col-md-1 form-label btn btn-primary btn-md">Cpf</label>
+                               class="col-md-2 form-label btn btn-primary btn-md">Cpf</label>
                         <div class="col-md-6">
                             <input type="text" name="cpf" id="idcpf" 
                                    class="form-control" value="${cliente.cpf}">
                             
                         </div>
                     </div>
-                    <div class="form-group row offset-md-2 mt-3">
+                    <div class="form-group row offset-md-3 mt-3">
                         <label for="iddata" 
                                class="col-md-2 form-label btn btn-primary btn-md">Data de Cadastro</label>
                         <div class="col-md-6">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idendereco" 
-                            class="col-md-1 form-label btn btn-primary btn-md">Endereco</label>
+                            class="col-md-2 form-label btn btn-primary btn-md">Endereco</label>
                         <div class="col-md-6">
                             <input type="text" name="endereco" id="idendereco" 
                                    class="form-control" value="${cliente.endereco}">
@@ -80,7 +80,7 @@
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idemail" 
-                            class="col-md-1 form-label btn btn-primary btn-md">Email</label>
+                            class="col-md-2 form-label btn btn-primary btn-md">Email</label>
                         <div class="col-md-6">
                             <input type="text" name="email" id="idemail" 
                                    class="form-control" value="${cliente.email}">
@@ -89,7 +89,7 @@
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
                         <label for="idtelefone" 
-                            class="col-md-1 form-label btn btn-primary btn-md">Telefone</label>
+                            class="col-md-2 form-label btn btn-primary btn-md">Telefone</label>
                         <div class="col-md-6">
                             <input type="text" name="telefone" id="idtelefone" 
                                    class="form-control" value="${cliente.telefone}">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
                     <div class="form-group row offset-md-3 mt-3">
-                        <label for="idstatus" class="col-md-1 form-label btn btn-primary btn-md mt-2">Status</label>
+                        <label for="idstatus" class="col-md-2 form-label btn btn-primary btn-md mt-2">Status</label>
                         <div class="col-md-6">
                             <select id="idstatus" name="status"
                                 class="form-control-sm mt-2">

@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="css/styles.css" type="text/css">
         <title>Home</title>
     </head>
-    <body>
+    <body id="fundo">
             <div id="container-fluid header">
                 <%@include file="template/banner.jsp" %>
             </div>
@@ -31,21 +31,24 @@
                 <div class="form-group">
                     <br><br><br><h1 class="text-center mt-3">Missão</h1>
                     <br>
-                    <h5>
+                    <h5 style="padding-right: 1cm;
+                        padding-left: 1cm;">
                       Incentivar o uso da bicicleta como um meio de transporte saudável que não polui, contribuindo para a sustentabilidade. 
                       Prestar serviços de alta qualidade com agilidade e confiança, atendendo a todos os tipos de clientes com competência, ética e dedicação, buscando sempre a satisfação.
                     </h5>
                     <br>
                     <h1 class="text-center mt-3">Visão</h1>
                     <br>
-                    <h5>
+                    <h5 style="padding-right: 1cm;
+                        padding-left: 1cm;">
                       Ser uma das líderes no segmento de bicicletas, visando sempre honestidade, integridade, qualidade e eficiência; além de fixar nossa marca na mente dos consumidores 
                       como símbolo de seriedade e confiança dentro do determinado ramo.
                     </h5>
                     <br>
                     <h1 class="text-center mt-3">Valores</h1>
                     <br>
-                    <h5>
+                    <h5 style="padding-right: 1cm;
+                        padding-left: 1cm;">
                       1- Superar as expectativas de nossos clientes;<br>
 
                       2- Prestar serviços com idoneidade e comprometimento;<br>
