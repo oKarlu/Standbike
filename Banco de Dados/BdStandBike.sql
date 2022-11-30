@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2022 at 08:16 PM
+-- Generation Time: Nov 30, 2022 at 03:37 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -45,10 +45,11 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`idCliente`, `nome`, `cpf`, `email`, `endereco`, `telefone`, `dataCadastro`, `status`) VALUES
-(1, 'Julia', '11111111111', 'julia@gmail.com', 'Samambaia', '61999999999', '2022-11-15', 1),
+(1, 'Fernanda Martins Cunha', '11111111111', 'fernanda@gmail.com', 'Planaltina - Quadra 02 Conjunto F, 354', '61999999999', '2022-11-15', 1),
 (2, 'Danilo Cunha Ribeiro', '99988877755', 'danilo@gmail.com', 'Rua Queimados-RJ', '61999887744', '2022-11-20', 1),
 (3, 'Felipe Almeida Silva', '44455566611', 'felipe@gmail.com', 'Rua Margem da Estrada de Ferro, 255', '61955885544', '2022-11-10', 1),
-(4, 'Emily Sousa Dias', '33322211155', 'emily@hotmail.com', 'Rua José Ignácio, 964', '61988447711', '2022-11-19', 1);
+(4, 'Emily Sousa Dias', '33322211155', 'emily@hotmail.com', 'Rua José Ignácio, 964', '61988447711', '2022-11-19', 1),
+(5, 'Joao pedro', '55599988811', 'joao@gmail.com', 'São vicente', '61788445566', '2022-11-26', 1);
 
 -- --------------------------------------------------------
 
@@ -60,54 +61,59 @@ CREATE TABLE `menu` (
   `idMenu` int(11) NOT NULL,
   `nome` varchar(128) NOT NULL,
   `link` varchar(256) NOT NULL,
-  `icone` varchar(256) DEFAULT NULL,
-  `exibir` int(11) NOT NULL
+  `exibir` int(11) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `menu`
 --
 
-INSERT INTO `menu` (`idMenu`, `nome`, `link`, `icone`, `exibir`) VALUES
-(1, 'Home', 'index.jsp', NULL, 1),
-(2, 'Perfis', 'gerenciarPerfil?acao=listar', NULL, 1),
-(3, 'Menus', 'gerenciarMenu?acao=listar', NULL, 1),
-(4, 'Clientes', 'gerenciarCliente?acao=listar', NULL, 1),
-(5, 'Produtos', 'gerenciarProduto?acao=listar', NULL, 1),
-(6, 'Usuarios', 'gerenciarUsuario?acao=listar', NULL, 1),
-(7, 'Cadastrar Perfil', 'cadastrarPerfil.jsp', NULL, 0),
-(8, 'Alterar Perfil', 'gerenciarPerfil?acao=alterar', NULL, 0),
-(9, 'Deletar Perfil', 'gerenciarPerfil?acao=deletar', NULL, 0),
-(10, 'Listar Perfil', 'listarPerfis.jsp', NULL, 0),
-(11, 'Cadastrar Menu', 'cadastrarMenu.jsp', NULL, 0),
-(12, 'Listar Menu', 'listarMenus.jsp', NULL, 0),
-(13, 'Alterar Menu', 'gerenciarMenu?acao=alterar', NULL, 0),
-(14, 'Deletar Menu', 'gerenciarMenu?acao=deletar', NULL, 0),
-(15, 'Perfis Acesso', 'gerenciarPerfil.do?acao=gerenciar', NULL, 0),
-(16, 'Form Menu Perfil', 'formMenuPerfil.jsp', NULL, 0),
-(17, 'Desvincular Menu Perfil', 'gerenciarPerfil.do?acao=desvincular', NULL, 0),
-(18, 'Cadastrar Cliente', 'cadastrarCliente.jsp', NULL, 0),
-(19, 'Pagina Cliente', 'listarClientes.jsp', NULL, 0),
-(20, 'Alterar Cliente', 'gerenciarCliente?acao=alterar', NULL, 0),
-(21, 'Ativar Cliente', 'gerenciarCliente?acao=ativar', NULL, 0),
-(22, 'Desativar Cliente', 'gerenciarCliente?acao=desativar', NULL, 0),
-(25, 'Pagina Produto', 'listarProdutos.jsp', NULL, 0),
-(26, 'Alterar Produto', 'gerenciarProduto?acao=alterar', NULL, 0),
-(27, 'Ativar Produto', 'gerenciarProduto?acao=ativar', NULL, 0),
-(28, 'Desativar Produto', 'gerenciarProduto?acao=desativar', NULL, 0),
-(29, 'Pagina Usuario', 'listarUsuarios.jsp', NULL, 0),
-(30, 'Alterar Usuario', 'gerenciarUsuario?acao=alterar', NULL, 0),
-(31, 'Ativar Usuario', 'gerenciarUsuario?acao=ativar', NULL, 0),
-(32, 'Desativar Usuario', 'gerenciarUsuario?acao=desativar', NULL, 0),
-(33, 'Cadastrar Produto', 'cadastrarProduto.jsp', '', 0),
-(34, 'Cadastrar Usuario', 'cadastrarUsuario.jsp', '', 0),
-(35, 'Form venda', 'formVenda.jsp', '', 0),
-(36, 'Form Continuar Venda', 'formVenda.jsp?acao=continuar', '', 0),
-(37, 'Gerenciar Carrinho Add', 'gerenciarCarrinho?acao=add', '', 0),
-(38, 'Formulário finalizar venda', 'formFinalizarVenda.jsp', '', 0),
-(39, 'Gerar Relatório Cliente', 'gerenciarCliente?acao=report', '', 0),
-(40, 'Pagina Vendas', 'listarVendas.jsp', '', 0),
-(41, 'Vendas', 'gerenciarVenda?acao=listar', '', 1);
+INSERT INTO `menu` (`idMenu`, `nome`, `link`, `exibir`, `status`) VALUES
+(1, 'Home', 'index.jsp', 1, 1),
+(2, 'Perfis', 'gerenciarPerfil?acao=listar', 1, 1),
+(3, 'Menus', 'gerenciarMenu?acao=listar', 1, 1),
+(4, 'Clientes', 'gerenciarCliente?acao=listar', 1, 1),
+(5, 'Produtos', 'gerenciarProduto?acao=listar', 1, 1),
+(6, 'Usuarios', 'gerenciarUsuario?acao=listar', 1, 1),
+(7, 'Cadastrar Perfil', 'cadastrarPerfil.jsp', 0, 1),
+(8, 'Alterar Perfil', 'gerenciarPerfil?acao=alterar', 0, 1),
+(9, 'Deletar Perfil', 'gerenciarPerfil?acao=deletar', 0, 1),
+(10, 'Listar Perfil', 'listarPerfis.jsp', 0, 1),
+(11, 'Cadastrar Menu', 'cadastrarMenu.jsp', 0, 1),
+(12, 'Listar Menu', 'listarMenus.jsp', 0, 1),
+(13, 'Alterar Menu', 'gerenciarMenu?acao=alterar', 0, 1),
+(14, 'Deletar Menu', 'gerenciarMenu?acao=deletar', 0, 1),
+(15, 'Perfis Acesso', 'gerenciarPerfil.do?acao=gerenciar', 0, 1),
+(16, 'Form Menu Perfil', 'formMenuPerfil.jsp', 0, 1),
+(17, 'Desvincular Menu Perfil', 'gerenciarPerfil.do?acao=desvincular', 0, 1),
+(18, 'Cadastrar Cliente', 'cadastrarCliente.jsp', 0, 1),
+(19, 'Pagina Cliente', 'listarClientes.jsp', 0, 1),
+(20, 'Alterar Cliente', 'gerenciarCliente?acao=alterar', 0, 1),
+(21, 'Ativar Cliente', 'gerenciarCliente?acao=ativar', 0, 1),
+(22, 'Desativar Cliente', 'gerenciarCliente?acao=desativar', 0, 1),
+(25, 'Pagina Produto', 'listarProdutos.jsp', 0, 1),
+(26, 'Alterar Produto', 'gerenciarProduto?acao=alterar', 0, 1),
+(27, 'Ativar Produto', 'gerenciarProduto?acao=ativar', 0, 1),
+(28, 'Desativar Produto', 'gerenciarProduto?acao=desativar', 0, 1),
+(29, 'Pagina Usuario', 'listarUsuarios.jsp', 0, 1),
+(30, 'Alterar Usuario', 'gerenciarUsuario?acao=alterar', 0, 1),
+(31, 'Ativar Usuario', 'gerenciarUsuario?acao=ativar', 0, 1),
+(32, 'Desativar Usuario', 'gerenciarUsuario?acao=desativar', 0, 1),
+(33, 'Cadastrar Produto', 'cadastrarProduto.jsp', 0, 1),
+(34, 'Cadastrar Usuario', 'cadastrarUsuario.jsp', 0, 1),
+(35, 'Form venda', 'formVenda.jsp', 0, 1),
+(36, 'Form Continuar Venda', 'formVenda.jsp?acao=continuar', 0, 1),
+(37, 'Gerenciar Carrinho Add', 'gerenciarCarrinho?acao=add', 0, 1),
+(38, 'Formulário finalizar venda', 'formFinalizarVenda.jsp', 0, 1),
+(39, 'Gerar Relatório Cliente', 'gerenciarCliente?acao=report', 0, 1),
+(40, 'Pagina Vendas', 'listarVendas.jsp', 0, 1),
+(41, 'Vendas', 'gerenciarVenda?acao=listar', 1, 1),
+(42, 'Ativar Perfil', 'gerenciarPerfil?acao=ativar', 0, 1),
+(43, 'Desativar Perfil', 'gerenciarPerfil?acao=desativar', 0, 1),
+(44, 'Ativar Menu', 'gerenciarMenu?acao=ativar', 0, 1),
+(45, 'Desativar Menu', 'gerenciarMenu?acao=desativar', 0, 1),
+(50, 'teste', 'teste', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -126,6 +132,7 @@ CREATE TABLE `menu_perfil` (
 
 INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 (1, 1),
+(1, 2),
 (2, 1),
 (3, 1),
 (4, 1),
@@ -163,7 +170,11 @@ INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 (38, 1),
 (39, 1),
 (40, 1),
-(41, 1);
+(41, 1),
+(42, 1),
+(43, 1),
+(44, 1),
+(45, 1);
 
 -- --------------------------------------------------------
 
@@ -173,16 +184,18 @@ INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 
 CREATE TABLE `perfil` (
   `idPerfil` int(11) NOT NULL,
-  `nome` varchar(128) NOT NULL
+  `nome` varchar(128) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `perfil`
 --
 
-INSERT INTO `perfil` (`idPerfil`, `nome`) VALUES
-(1, 'Administrador'),
-(2, 'Gerente');
+INSERT INTO `perfil` (`idPerfil`, `nome`, `status`) VALUES
+(1, 'Administrador', 1),
+(2, 'Gerente', 1),
+(3, 'Vendedor', 1);
 
 -- --------------------------------------------------------
 
@@ -194,7 +207,6 @@ CREATE TABLE `produto` (
   `idProduto` int(11) NOT NULL,
   `nome` varchar(128) NOT NULL,
   `descricao` varchar(128) DEFAULT NULL,
-  `estoque` int(11) NOT NULL,
   `preco` double NOT NULL,
   `nomeArquivo` varchar(256) DEFAULT NULL,
   `caminho` varchar(256) DEFAULT NULL,
@@ -205,11 +217,11 @@ CREATE TABLE `produto` (
 -- Dumping data for table `produto`
 --
 
-INSERT INTO `produto` (`idProduto`, `nome`, `descricao`, `estoque`, `preco`, `nomeArquivo`, `caminho`, `status`) VALUES
-(1, 'VELOX - Caloi', 'Caloi Velox V Brake Aro 29', 5, 1549.99, 'bicicleta_1.png', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bicicleta_1.png', 1),
-(2, 'Banco Selim MTB', 'Selim MTB Vazado  Shunfeng', 10, 29.9, 'selim-mtb-vazado-shunfeng.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\selim-mtb-vazado-shunfeng.jpg', 1),
-(3, 'Quadro KSW 29', 'Quadro 29 MTB Feminino Mwza - KSW', 3, 475, 'quadro-29-mtb-feminino-mwza-ksw.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\quadro-29-mtb-feminino-mwza-ksw.jpg', 1),
-(4, 'Bomba Ar - Elleven', 'Bomba Ar tripé, Grande - Elleven', 6, 119, 'bomba-ar-oficina-grande-elleven.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bomba-ar-oficina-grande-elleven.jpg', 1);
+INSERT INTO `produto` (`idProduto`, `nome`, `descricao`, `preco`, `nomeArquivo`, `caminho`, `status`) VALUES
+(1, 'VELOX - Caloi', 'Caloi Velox V Brake Aro 29', 1549.99, 'bicicleta_1.png', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bicicleta_1.png', 1),
+(2, 'Banco Selim MTB', 'Selim MTB Vazado  Shunfeng', 29.9, 'selim-mtb-vazado-shunfeng.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\selim-mtb-vazado-shunfeng.jpg', 1),
+(3, 'Quadro KSW 29', 'Quadro 29 MTB Feminino Mwza - KSW', 475, 'quadro-29-mtb-feminino-mwza-ksw.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\quadro-29-mtb-feminino-mwza-ksw.jpg', 1),
+(4, 'Bomba Ar - Elleven', 'Bomba Ar tripé, Grande - Elleven', 119, 'bomba-ar-oficina-grande-elleven.jpg', 'H:\\TCC\\Standbike\\web\\imagens_produto\\bomba-ar-oficina-grande-elleven.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -351,25 +363,25 @@ ALTER TABLE `venda_produto`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `menu_perfil`
 --
 ALTER TABLE `menu_perfil`
-  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `idMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `perfil`
 --
 ALTER TABLE `perfil`
-  MODIFY `idPerfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idPerfil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `produto`

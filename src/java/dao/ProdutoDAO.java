@@ -20,29 +20,27 @@ public class ProdutoDAO {
         con = ConexaoFactory.conectar();
         
         if(prod.getIdProduto() == 0){
-            sql = "INSERT INTO produto(nome, descricao, estoque, preco, nomeArquivo, caminho, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            sql = "INSERT INTO produto(nome, descricao, preco, nomeArquivo, caminho, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setString(1, prod.getNome());
             ps.setString(2, prod.getDescricao());
-            ps.setInt(3, prod.getEstoque());
-            ps.setDouble(4, prod.getPreco());
-            ps.setString(5, prod.getNomeArquivo());
-            ps.setString(6, prod.getCaminho());
-            ps.setInt(7, prod.getStatus());
+            ps.setDouble(3, prod.getPreco());
+            ps.setString(4, prod.getNomeArquivo());
+            ps.setString(5, prod.getCaminho());
+            ps.setInt(6, prod.getStatus());
             
                     
         } else {
-            sql  = "UPDATE produto SET nome = ?, descricao = ?, estoque = ?, preco = ?, nomeArquivo = ?, caminho = ?, status = ? WHERE idProduto = ?";
+            sql  = "UPDATE produto SET nome = ?, descricao = ?, preco = ?, nomeArquivo = ?, caminho = ?, status = ? WHERE idProduto = ?";
             ps = con.prepareStatement(sql);
             ps.setString(1, prod.getNome());
             ps.setString(2, prod.getDescricao());
-            ps.setInt(3, prod.getEstoque());
-            ps.setDouble(4, prod.getPreco());
-            ps.setString(5, prod.getNomeArquivo());
-            ps.setString(6, prod.getCaminho());
-            ps.setInt(7, prod.getStatus());
-            ps.setInt(8, prod.getIdProduto());
+            ps.setDouble(3, prod.getPreco());
+            ps.setString(4, prod.getNomeArquivo());
+            ps.setString(5, prod.getCaminho());
+            ps.setInt(6, prod.getStatus());
+            ps.setInt(7, prod.getIdProduto());
         }
             ps.executeUpdate();
             ConexaoFactory.close(con);
@@ -63,7 +61,6 @@ public class ProdutoDAO {
             cli.setIdProduto(rs.getInt("idProduto"));
             cli.setNome(rs.getString("nome"));
             cli.setDescricao(rs.getString("descricao"));
-            cli.setEstoque(rs.getInt("estoque"));
             cli.setPreco(rs.getDouble("preco"));
             cli.setNomeArquivo(rs.getString("nomeArquivo"));
             cli.setCaminho(rs.getString("caminho"));
@@ -79,7 +76,7 @@ public class ProdutoDAO {
     
     public Produto getCarregarPorId(int idProduto) throws SQLException{
         Produto p = new Produto();
-        sql = "SELECT idProduto, nome, descricao, estoque, preco, nomeArquivo, caminho, status "
+        sql = "SELECT idProduto, nome, descricao, preco, nomeArquivo, caminho, status "
             + "FROM produto WHERE idProduto = ?";
         
         con = ConexaoFactory.conectar();
@@ -91,7 +88,6 @@ public class ProdutoDAO {
             p.setIdProduto(rs.getInt("idProduto"));
             p.setNome(rs.getString("nome"));
             p.setDescricao(rs.getString("descricao"));
-            p.setEstoque(rs.getInt("estoque"));
             p.setPreco(rs.getDouble("preco"));
             p.setNomeArquivo(rs.getString("nomeArquivo"));
             p.setCaminho(rs.getString("caminho"));

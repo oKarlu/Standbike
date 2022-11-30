@@ -47,7 +47,6 @@
                                         <th>Código</th>
                                         <th>Nome</th>
                                         <th>Descrição</th>
-                                        <th>Estoque</th>
                                         <th>Preço</th>
                                         <th>Status</th>
                                         <th>Ação</th>
@@ -64,7 +63,6 @@
                                             </div>
                                             ${p.nome}</td>
                                         <td>${p.descricao}</td>
-                                        <td>${p.estoque}</td>
                                         <td><fmt:formatNumber  pattern="#,##0.00" value="${p.preco}"/></td>
                                         <td>
                                             <c:choose>

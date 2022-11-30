@@ -11,8 +11,6 @@ import model.Produto;
 import dao.ProdutoDAO;
 import java.io.File;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.MultipartConfig;
@@ -125,7 +123,6 @@ public class GerenciarProduto extends HttpServlet {
         String idProduto = request.getParameter("idProduto");
         String nome = request.getParameter("nome");
         String descricao = request.getParameter("descricao");
-        String estoque = request.getParameter("estoque");
         String preco = request.getParameter("preco");
         String status = request.getParameter("status");
         
@@ -153,14 +150,6 @@ public class GerenciarProduto extends HttpServlet {
                
             }else{
                 p.setNome(nome);
-            }
-            
-            if(estoque.isEmpty() || estoque.equals("")){
-                request.setAttribute("msg", "Informe o estoque do produto!");
-                despacharRequisicao(request, response);
-               
-            }else{
-                p.setEstoque(Integer.parseInt(estoque));
             }
             
             double novoPreco = 0;

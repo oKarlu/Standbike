@@ -32,14 +32,6 @@
                 <div class="h-100 justify-content-center align-items-center">
                     <div class="col-12">
                         <br><br><br><h3 class="text-center mt-3">Listagem de Vendas</h3>
-                        <div class="col-sm-12" style="padding-bottom: 15px">
-                            <a href="gerenciarVenda?acao=report"
-                                class="btn btn-secondary btn-md"
-                                role="button">Gerar relatório&nbsp;
-                                <i class="fa-solid fa-paper-plane"></i>
-                            
-                            </a>
-                        </div>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered responsive" 
                                    id="listarVenda">

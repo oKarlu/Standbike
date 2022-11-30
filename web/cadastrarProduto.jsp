@@ -77,15 +77,6 @@
                         </div>
                     </div>
                     <div class="form-group row offset-md-3 mt-4">
-                        <label for="idestoque" 
-                            class="col-md-2 form-label btn btn-primary btn-md">Estoque</label>
-                        <div class="col-md-6">
-                            <input type="number" name="estoque" id="idestoque" min="0" 
-                                   class="form-control" value="${produto.estoque}">
-                            
-                        </div>
-                    </div>
-                    <div class="form-group row offset-md-3 mt-4">
                         <label for="idpreco" 
                             class="col-md-2 form-label btn btn-primary btn-md">Preço</label>
                         <div class="col-md-6">

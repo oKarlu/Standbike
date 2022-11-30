@@ -27,9 +27,8 @@
             <div id="container-fluid menu">
                 <%@include file="template/menu.jsp" %>
             </div>
-            <div class="card" id="telaindex">
-                <div class="form-group">
-                    <br><br><br><h1 class="text-center mt-3">Missão</h1>
+            <div style="" id="telaindex">
+                <h1 class="text-center mt-3">Missão</h1>
                     <br>
                     <h5 style="padding-right: 1cm;
                         padding-left: 1cm;">
@@ -57,11 +56,6 @@
 
                       4- Buscar sempre a qualidade em nossos produtos e serviços, inovando constantemente.
                     </h5>
-
-                </div>
-            
-            
-            
             </div>
         
         <!--JQuery.js -->
