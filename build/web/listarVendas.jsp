@@ -34,7 +34,7 @@
                         <br><br><br><h3 class="text-center mt-3">Listagem de Vendas</h3>
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered responsive" 
-                                   id="listarVenda">
+                                   id="listarVendas">
                                 <thead class="bg-primary">
                                     <tr class="text-white">
                                         <th>Código</th>

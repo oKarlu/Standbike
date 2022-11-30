@@ -142,19 +142,12 @@ public class GerenciarUsuario extends HttpServlet {
            u.setSenha(senha);
        }
             
-       if(status.equals("") || status.isEmpty()){
-           request.setAttribute("msg", "Informe o status do usuário!");
-           despacharRequisicao(request, response);
-       }else{
-           try {
-                u.setStatus(Integer.parseInt("status"));
-           } catch (NumberFormatException e) {
-               mensagem = "Erro: " + e.getMessage();
-               e.printStackTrace();
-           }
-               
-         
-       }
+        if(status.isEmpty() || status.equals("")){
+            request.setAttribute("msg", "Informe o status do usuário!");
+            despacharRequisicao(request, response);
+        }else{
+            u.setStatus(Integer.parseInt(status));
+            }
           
        Perfil p = new Perfil();
        if(idPerfil.equals("") || idPerfil.isEmpty()){

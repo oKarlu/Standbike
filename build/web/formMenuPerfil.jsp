@@ -173,13 +173,6 @@
 
             
        </div>
-        
-        <!--JQuery.js -->
-        <script src="js/jquery.min.js"></script>
-        <!--Popper.js via cdn -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha512-Ua/7Woz9L5O0cwB/aYexmgoaD7lw3dWe9FvXejVdgqu71gRog3oJgjSWQR55fwWx+WKuk8cl7UwA1RS6QCadFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <!-- Bootstrap.js -->
-        <script src="js/bootstrap.min.js"></script>
             
     </body>
 </html>
