@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2022 at 03:37 PM
+-- Generation Time: Nov 30, 2022 at 06:04 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -133,10 +133,13 @@ CREATE TABLE `menu_perfil` (
 INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 (1, 1),
 (1, 2),
+(1, 3),
 (2, 1),
 (3, 1),
 (4, 1),
+(4, 3),
 (5, 1),
+(5, 3),
 (6, 1),
 (7, 1),
 (8, 1),
@@ -151,10 +154,12 @@ INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 (17, 1),
 (18, 1),
 (19, 1),
+(19, 3),
 (20, 1),
 (21, 1),
 (22, 1),
 (25, 1),
+(25, 3),
 (26, 1),
 (27, 1),
 (28, 1),
@@ -165,12 +170,18 @@ INSERT INTO `menu_perfil` (`idMenu`, `idPerfil`) VALUES
 (33, 1),
 (34, 1),
 (35, 1),
+(35, 3),
 (36, 1),
+(36, 3),
 (37, 1),
+(37, 3),
 (38, 1),
+(38, 3),
 (39, 1),
 (40, 1),
+(40, 3),
 (41, 1),
+(41, 3),
 (42, 1),
 (43, 1),
 (44, 1),
@@ -243,7 +254,9 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `nome`, `login`, `senha`, `status`, `idPerfil`) VALUES
-(1, 'Carlos', 'adm', 'adm', 1, 1);
+(1, 'Carlos', 'adm', 'adm', 1, 1),
+(2, 'Leonardo Ribeiro Barbosa', 'vendedor', 'vendedor', 1, 3),
+(3, 'Igor Dias Silva', 'gerente', 'gerente', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -393,7 +406,7 @@ ALTER TABLE `produto`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `venda`
